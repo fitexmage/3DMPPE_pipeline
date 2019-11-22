@@ -47,7 +47,7 @@ def main():
         image, _ = generate_patch_image(im, box, False, 0)
         image = transform(image)
         person_images[i, :, :image.shape[1], :image.shape[2]] = image
-        k_values[i] = np.array([math.sqrt(2000 * 2000 * 30 * 30 / (image.shape[1] * image.shape[2]))]).astype(np.float32)
+        k_values[i] = np.array([math.sqrt(2000 * 2000 * 30 * 30 / ((box[3] - box[1]) * (box[2] - box[0])))]).astype(np.float32)
 
         i += 1
 
