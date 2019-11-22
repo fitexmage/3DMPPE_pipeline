@@ -24,6 +24,7 @@ def main():
     person_images = []
     for box in person_boxes:
         box = box.cpu().numpy()
+        print(box)
         image = im[box[0]:box[2], box[1]: box[3]]
         person_images.append(image)
     cv2.imwrite("output.jpg", person_images[0])
