@@ -51,6 +51,7 @@ def main():
         k_value = torch.Tensor(k_value)
 
         image = cv2.resize(image, (256, 256))
+        cv2.imwrite("output.jpg", image)
         transform = transforms.Compose([ \
             transforms.ToTensor(),
             transforms.Normalize(mean=cfg.pixel_mean, std=cfg.pixel_std)] \
