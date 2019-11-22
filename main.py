@@ -43,10 +43,11 @@ def main():
 
     for box in person_boxes:
         box = box.cpu().numpy().astype(int)
+        k_values[i] = np.array([math.sqrt(2000 * 2000 * 35 * 35 / ((box[3] - box[1]) * (box[2] - box[0])))]).astype(
+            np.float32)
         image, _ = generate_patch_image(im, box, False, 0)
         image = transform(image)
         person_images[i] = image
-        k_values[i] = np.array([math.sqrt(2000 * 2000 * 35 * 35 / ((box[3] - box[1]) * (box[2] - box[0])))]).astype(np.float32)
 
         i += 1
 
