@@ -21,6 +21,10 @@ def main():
     predictor = DefaultPredictor(cfg)
     outputs = predictor(im)
     print(outputs["instances"].pred_classes)
+    print(outputs["instances"].pred_boxes)
+    v = Visualizer(im[:, :, ::-1], MetadataCatalog.get(cfg.DATASETS.TRAIN[0]), scale=1.2)
+    v = v.draw_instance_predictions(outputs["instances"].to("cpu"))
+    cv2.imwrite("output.jpg", v.get_image()[:, :, ::-1])
 
 if __name__ == "__main__":
     main()
