@@ -21,8 +21,7 @@ def main():
     predictor = DefaultPredictor(cfg)
     outputs = predictor(im)
     person_boxes = outputs["instances"].pred_boxes[outputs["instances"].pred_classes == 0]
-    print(type(person_boxes[0]))
-    print(type(person_boxes[0]))
+    print(person_boxes[0])
     person_images = []
     for box in person_boxes:
         image = im[box[0]:box[2], box[1]: box[3]]
