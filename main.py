@@ -44,8 +44,8 @@ def main():
     for box in person_boxes:
         box = box.cpu().numpy().astype(int)
         image, _ = generate_patch_image(im, box, False, 0)
-        for i in range(image.shape[2]):
-            image[:, :, i] = np.clip(image[:, :, i], 0, 255)
+        for j in range(image.shape[2]):
+            image[:, :, j] = np.clip(image[:, :, j], 0, 255)
         if i == 0:
             cv2.imwrite("output.jpg", image)
         image = transform(image)
