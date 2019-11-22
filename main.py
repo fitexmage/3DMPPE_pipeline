@@ -75,7 +75,6 @@ def main():
         rootnet_preds[i][1] += box[1]
         # cv2.circle(im, (rootnet_preds[i][0], rootnet_preds[i][1]), 5, (0, 0, 255), 0)
 
-
     posenet_cfg.set_args('0')
 
     posenet_tester = posenet_Test(24)
@@ -89,6 +88,7 @@ def main():
     for i, box in enumerate(person_boxes):
         posenet_preds[0][i][0] += box[0]
         posenet_preds[0][i][1] += box[1]
+        print((posenet_preds[0][i][0], posenet_preds[0][i][1]))
         cv2.circle(im, (posenet_preds[0][i][0], posenet_preds[0][i][1]), 5, (0, 0, 255), 0)
     cv2.imwrite("output.jpg", im)
 
