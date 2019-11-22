@@ -52,6 +52,7 @@ def main():
 
         image = cv2.resize(image, (256, 256))
         cv2.imwrite("output.jpg", image)
+        break
         transform = transforms.Compose([ \
             transforms.ToTensor(),
             transforms.Normalize(mean=cfg.pixel_mean, std=cfg.pixel_std)] \
