@@ -21,11 +21,9 @@ def main():
     predictor = DefaultPredictor(cfg)
     outputs = predictor(im)
     person_boxes = outputs["instances"].pred_boxes[outputs["instances"].pred_classes == 0]
-    print(outputs["instances"].pred_boxes)
-    print()
-    print(person_boxes)
     person_images = []
     for box in person_boxes:
+        box = box.tensor
         image = im[box[0]:box[2], box[1]: box[3]]
         person_images.append(image)
     cv2.imwrite("output.jpg", person_images[0])
