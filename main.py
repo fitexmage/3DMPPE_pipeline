@@ -20,7 +20,7 @@ def main():
     cfg.MODEL.WEIGHTS = "detectron2://COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x/137849600/model_final_f10217.pkl"
     predictor = DefaultPredictor(cfg)
     outputs = predictor(im)
-    print(outputs.shape)
+    print(type(outputs))
 
 if __name__ == "__main__":
     main()
