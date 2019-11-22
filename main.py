@@ -50,6 +50,7 @@ def main():
     preds = []
 
     k_value = np.array([math.sqrt(2000 * 2000 * 1500 * 1500 / (test_img.shape[0] * test_img.shape[1]))]).astype(np.float32)
+    k_value = torch.Tensor(k_value)
 
     test_img = cv2.resize(test_img, (256, 256))
     transform = transforms.Compose([ \
