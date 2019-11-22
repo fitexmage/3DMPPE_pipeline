@@ -87,10 +87,10 @@ def main():
         print(posenet_preds)
         print(posenet_preds.shape)
     for i, box in enumerate(person_boxes):
-        posenet_preds[0][i][0] += box[0]
-        posenet_preds[0][i][1] += box[1]
-        print((posenet_preds[0][i][0], posenet_preds[0][i][1]))
-        cv2.circle(im, (posenet_preds[0][i][0], posenet_preds[0][i][1]), 5, (0, 0, 255), 0)
+        posenet_preds[i, : ,0] += box[0]
+        posenet_preds[i, :, 1] += box[1]
+        for joint in posenet_preds[i]:
+            cv2.circle(im, (joint[0], joint[1]), 5, (0, 0, 255), 0)
     cv2.imwrite("output.jpg", im)
 
 if __name__ == "__main__":
