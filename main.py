@@ -84,7 +84,8 @@ def main():
     with torch.no_grad():
         posenet_preds = posenet_tester.model(person_images)
         posenet_preds = posenet_preds.cpu().numpy()
-        print(posenet_preds[0])
+        print(posenet_preds)
+        print(posenet_preds.shape)
     for i, box in enumerate(person_boxes):
         posenet_preds[0][i][0] += box[0]
         posenet_preds[0][i][1] += box[1]
