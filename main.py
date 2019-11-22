@@ -64,8 +64,8 @@ def main():
             coord_out = tester.model(image, k_value)
             coord_out = coord_out.cpu().numpy()
             preds.append(coord_out)
-    preds = np.concatenate(preds, axis=0)
-    print(preds)
+    # preds = np.concatenate(preds, axis=0)
+    # print(preds)
 
 if __name__ == "__main__":
     main()
