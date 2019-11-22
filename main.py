@@ -34,6 +34,7 @@ def main():
     from rootnet_repo.common.utils.pose_utils import flip
     import torch.backends.cudnn as cudnn
     import math
+    import torchvision.transforms as transforms
 
     parser = argparse.ArgumentParser()
     args = parser.parse_args()
@@ -50,7 +51,13 @@ def main():
 
     k_value = np.array([math.sqrt(2000 * 2000 * 1500 * 1500 / (test_img.shape[0] * test_img.shape[1]))]).astype(np.float32)
 
-    test_img = torch.Tensor(test_img)
+    test_img = cv2.resize(test_img, (256, 256, 3))
+    transform = transforms.Compose([ \
+        transforms.ToTensor(),
+        transforms.Normalize(mean=cfg.pixel_mean, std=cfg.pixel_std)] \
+        )
+    test_img = transform(test_img)
+    print(test_img.shape)
     test_img = torch.unsqueeze(test_img, 0)
     test_img = test_img.view(test_img.shape[0], test_img.shape[3], test_img.shape[1], test_img.shape[2])
 
