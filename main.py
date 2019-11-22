@@ -45,7 +45,7 @@ def main():
         transforms.ToTensor(),
         transforms.Normalize(mean=rootnet_cfg.pixel_mean, std=rootnet_cfg.pixel_std)]
     )
-
+    print(person_boxes)
     for i, box in enumerate(person_boxes):
         box = box.cpu().numpy().astype(int)
         image, _ = generate_patch_image(im, box, False, 0)
@@ -68,6 +68,7 @@ def main():
     with torch.no_grad():
         rootnet_preds = rootnet_tester.model(person_images, k_values)
         rootnet_preds = rootnet_preds.cpu().numpy()
+        print(rootnet_preds)
 
     for i, box in enumerate(person_boxes):
         rootnet_preds[i][0] += box[1]
