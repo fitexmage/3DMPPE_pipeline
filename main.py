@@ -3,10 +3,10 @@ import numpy as np
 import cv2
 import random
 
-# from detectron2.engine import DefaultPredictor
-# from detectron2.config import get_cfg
-# from detectron2.utils.visualizer import Visualizer
-# from detectron2.data import MetadataCatalog
+from detectron2.engine import DefaultPredictor
+from detectron2.config import get_cfg
+from detectron2.utils.visualizer import Visualizer
+from detectron2.data import MetadataCatalog
 
 def main():
     im = cv2.imread("./input.jpg")
