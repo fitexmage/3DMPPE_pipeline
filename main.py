@@ -49,6 +49,7 @@ def main():
     preds = []
 
     k_value = np.array([math.sqrt(2000 * 2000 * 1500 * 1500 / (test_img.shape[0] * test_img.shape[1]))]).astype(np.float32)
+    test_img = torch.Tensor(test_img)
 
     with torch.no_grad():
         coord_out = tester.model(test_img, k_value)
