@@ -42,9 +42,6 @@ def main():
 
         i += 1
 
-    person_images = torch.Tensor(person_images)
-    k_values = torch.Tensor(k_values)
-
     cfg.set_args(gpu_ids='0')
     cudnn.fastest = True
     cudnn.benchmark = True
@@ -61,6 +58,9 @@ def main():
         transforms.Normalize(mean=cfg.pixel_mean, std=cfg.pixel_std)]
     )
     person_images = transform(person_images)
+
+    person_images = torch.Tensor(person_images)
+    k_values = torch.Tensor(k_values)
 
     with torch.no_grad():
         coord_out = tester.model(person_images, k_values)
