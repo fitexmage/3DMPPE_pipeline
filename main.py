@@ -8,15 +8,6 @@ from detectron2.config import get_cfg
 from detectron2.utils.visualizer import Visualizer
 from detectron2.data import MetadataCatalog
 
-import argparse
-from tqdm import tqdm
-from rootnet_repo.main.config import cfg
-import torch
-from rootnet_repo.common.base import Tester
-from rootnet_repo.common.utils.vis import vis_keypoints
-from rootnet_repo.common.utils.pose_utils import flip
-import torch.backends.cudnn as cudnn
-
 def main():
     im = cv2.imread("./input.jpg")
     cfg = get_cfg()
@@ -35,16 +26,22 @@ def main():
 
     test_img = person_images[0]
 
+    import argparse
+    from rootnet_repo.main.config import cfg
+    import torch
+    from rootnet_repo.common.base import Tester
+    from rootnet_repo.common.utils.pose_utils import flip
+    import torch.backends.cudnn as cudnn
+
     parser = argparse.ArgumentParser()
     args = parser.parse_args()
-    cfg.set_args(0)
+    cfg.set_args(gpu_ids=0)
     cudnn.fastest = True
     cudnn.benchmark = True
     cudnn.deterministic = False
     cudnn.enabled = True
 
     tester = Tester(18)
-    tester._make_batch_generator()
     tester._make_model()
 
     preds = []
