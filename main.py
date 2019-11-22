@@ -1,19 +1,21 @@
 import numpy as np
 import cv2
+import math
+import torch
+import torch.backends.cudnn as cudnn
+import torchvision.transforms as transforms
 
 from detectron2.engine import DefaultPredictor
 from detectron2.config import get_cfg
 
 from rootnet_repo.main.config import cfg as rootnet_cfg
-import torch
-from rootnet_repo.common.base import Tester
-import torch.backends.cudnn as cudnn
-import math
-import torchvision.transforms as transforms
+from rootnet_repo.common.base import Tester as rootnet_Tester
 from rootnet_repo.data.dataset import generate_patch_image
 
-def main():
+from posenet_repo.main.config import cfg as posenet_cfg
+from posenet_repo.common.base import Tester as posenet_Test
 
+def main():
 
     im = cv2.imread("./input.jpg")
 
@@ -37,7 +39,6 @@ def main():
 
     for i, box in enumerate(person_boxes):
         box = box.cpu().numpy().astype(int)
-        print(box)
         image, _ = generate_patch_image(im, box, False, 0)
         image = transform(image)
         person_images[i] = image
@@ -52,15 +53,27 @@ def main():
     cudnn.deterministic = False
     cudnn.enabled = True
 
-    tester = Tester(18)
-    tester._make_model()
+    rootnet_tester = rootnet_Tester(18)
+    rootnet_tester._make_model()
 
     with torch.no_grad():
-        preds = tester.model(person_images, k_values)
-        preds = preds.cpu().numpy()
+        rootnet_preds = rootnet_tester.model(person_images, k_values)
+        rootnet_preds = rootnet_preds.cpu().numpy()
 
-    # for i in range(len(preds)):
-    #     preds[i][0] +
+    for i, box in enumerate(person_boxes):
+        rootnet_preds[i][0] += box[0]
+        rootnet_preds[i][1] += box[1]
+
+
+    posenet_cfg.set_args('0')
+
+    posenet_tester = posenet_Test(24)
+    posenet_tester._make_model()
+
+    with torch.no_grad():
+        posenet_preds = posenet_tester.model(person_images)
+        posenet_preds = posenet_preds.cpu().numpu()
+        print(posenet_preds.shape)
 
 
 if __name__ == "__main__":
