@@ -3,8 +3,6 @@ import numpy as np
 import cv2
 import random
 
-
-
 # from detectron2.engine import DefaultPredictor
 # from detectron2.config import get_cfg
 # from detectron2.utils.visualizer import Visualizer
@@ -12,15 +10,6 @@ import random
 
 def main():
     im = cv2.imread("./input.jpg")
-
-    import exifread
-    # Open image file for reading (binary mode)
-    f = open("./WechatIMG7.jpeg", 'rb')
-
-    # Return Exif tags
-    tags = exifread.process_file(f)
-    print(tags)
-    cv2.calibrateCamera()
 
     cfg = get_cfg()
     cfg.merge_from_file("./detectron2_repo/configs/COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml")
