@@ -35,7 +35,7 @@ def main():
 
     parser = argparse.ArgumentParser()
     args = parser.parse_args()
-    cfg.set_args(gpu_ids=0)
+    cfg.set_args(gpu_ids="0")
     cudnn.fastest = True
     cudnn.benchmark = True
     cudnn.deterministic = False
