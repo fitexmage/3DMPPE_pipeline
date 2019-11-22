@@ -20,11 +20,12 @@ def main():
     cfg.MODEL.WEIGHTS = "detectron2://COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x/137849600/model_final_f10217.pkl"
     predictor = DefaultPredictor(cfg)
     outputs = predictor(im)
-    print(outputs["instances"].pred_classes)
-    print(outputs["instances"].pred_boxes)
-    v = Visualizer(im[:, :, ::-1], MetadataCatalog.get(cfg.DATASETS.TRAIN[0]), scale=1.2)
-    v = v.draw_instance_predictions(outputs["instances"].to("cpu"))
-    cv2.imwrite("output.jpg", v.get_image()[:, :, ::-1])
+    person_boxes = outputs["instances"].pred_boxes[outputs["instances"].pred_classes == 0]
+    person_images = []
+    for box in person_boxes:
+        image = im[box[0]:box[2], box[1]: box[3]]
+        person_images.append(image)
+    cv2.imwrite("output.jpg", person_images[0])
 
 if __name__ == "__main__":
     main()
