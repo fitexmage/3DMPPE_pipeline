@@ -61,10 +61,9 @@ def main():
         rootnet_preds = rootnet_preds.cpu().numpy()
 
     for i, box in enumerate(person_boxes):
-        print(box)
         rootnet_preds[i][0] += box[1]
         rootnet_preds[i][1] += box[0]
-        cv2.circle(im, (rootnet_preds[i][0], rootnet_preds[i][1]), 5, (0, 0, 255), 0)
+        cv2.circle(im, (rootnet_preds[i][1], rootnet_preds[i][0]), 5, (0, 0, 255), 0)
     cv2.imwrite("output.jpg", im)
 
     posenet_cfg.set_args('0')
