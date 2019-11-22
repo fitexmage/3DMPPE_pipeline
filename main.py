@@ -62,7 +62,7 @@ def main():
 
     with torch.no_grad():
         coord_out = tester.model(test_img, k_value)
-        print(type(coord_out))
+        print(coord_out.shape)
 
 
 if __name__ == "__main__":
