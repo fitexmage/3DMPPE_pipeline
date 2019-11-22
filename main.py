@@ -57,9 +57,7 @@ def main():
         transforms.Normalize(mean=cfg.pixel_mean, std=cfg.pixel_std)] \
         )
     test_img = transform(test_img)
-    print(test_img.shape)
     test_img = torch.unsqueeze(test_img, 0)
-    test_img = test_img.view(test_img.shape[0], test_img.shape[3], test_img.shape[1], test_img.shape[2])
 
     with torch.no_grad():
         coord_out = tester.model(test_img, k_value)
