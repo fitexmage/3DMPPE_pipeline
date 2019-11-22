@@ -74,7 +74,7 @@ def main():
     with torch.no_grad():
         posenet_preds = posenet_tester.model(person_images)
         posenet_preds = posenet_preds.cpu().numpy()
-        print(posenet_preds.shape)
+        print(posenet_preds[0])
 
 
 if __name__ == "__main__":
