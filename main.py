@@ -43,7 +43,7 @@ def main():
 
     for box in person_boxes:
         box = box.cpu().numpy().astype(int)
-        image = box[box[1]:box[3], box[0]:box[2]]
+        image = im[box[1]:box[3], box[0]:box[2]]
         mask = np.zeros((256, 256, 3))
         mask[:image.shape[0], :image.shape[1], :] = image
         # image, _ = generate_patch_image(im, box, False, 0)
