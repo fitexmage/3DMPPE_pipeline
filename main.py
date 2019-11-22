@@ -3,21 +3,12 @@ import numpy as np
 import cv2
 import random
 
-from detectron2.engine import DefaultPredictor
-from detectron2.config import get_cfg
-from detectron2.utils.visualizer import Visualizer
-from detectron2.data import MetadataCatalog
-
-import argparse
-from rootnet_repo.main.config import cfg
-import torch
-from rootnet_repo.common.base import Tester
-from rootnet_repo.common.utils.pose_utils import flip
-import torch.backends.cudnn as cudnn
-import math
-import torchvision.transforms as transforms
-
 def main():
+    from detectron2.engine import DefaultPredictor
+    from detectron2.config import get_cfg
+    from detectron2.utils.visualizer import Visualizer
+    from detectron2.data import MetadataCatalog
+
     im = cv2.imread("./input.jpg")
 
     cfg = get_cfg()
@@ -27,6 +18,15 @@ def main():
     cfg.MODEL.WEIGHTS = "detectron2://COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x/137849600/model_final_f10217.pkl"
     predictor = DefaultPredictor(cfg)
     outputs = predictor(im)
+
+    import argparse
+    from rootnet_repo.main.config import cfg
+    import torch
+    from rootnet_repo.common.base import Tester
+    from rootnet_repo.common.utils.pose_utils import flip
+    import torch.backends.cudnn as cudnn
+    import math
+    import torchvision.transforms as transforms
 
     person_boxes = outputs["instances"].pred_boxes[outputs["instances"].pred_classes == 0]
     person_images = np.zeros((len(person_boxes), 3, 256, 256))
