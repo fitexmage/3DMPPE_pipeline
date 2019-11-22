@@ -73,7 +73,7 @@ def main():
 
     with torch.no_grad():
         posenet_preds = posenet_tester.model(person_images)
-        posenet_preds = posenet_preds.cpu().numpu()
+        posenet_preds = posenet_preds.cpu().numpy()
         print(posenet_preds.shape)
 
 
