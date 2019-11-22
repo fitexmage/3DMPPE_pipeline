@@ -44,6 +44,7 @@ def main():
         box = box.cpu().numpy().astype(int)
         image = im[box[1]:box[3], box[0]: box[2]]
         image = cv2.resize(image, (256, 256))
+        print(image.shape)
         # image = np.transpose(image, (2, 0, 1))
         image = transform(image)
         person_images[i] = image
