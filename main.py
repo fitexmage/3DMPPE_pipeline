@@ -51,7 +51,7 @@ def main():
 
     k_value = np.array([math.sqrt(2000 * 2000 * 1500 * 1500 / (test_img.shape[0] * test_img.shape[1]))]).astype(np.float32)
 
-    test_img = cv2.resize(test_img, (256, 256, 3))
+    test_img = cv2.resize(test_img, (256, 256))
     transform = transforms.Compose([ \
         transforms.ToTensor(),
         transforms.Normalize(mean=cfg.pixel_mean, std=cfg.pixel_std)] \
