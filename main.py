@@ -45,6 +45,7 @@ def main():
         image = im[box[1]:box[3], box[0]: box[2]]
         k_values[i] = np.array([math.sqrt(2000 * 2000 * 30 * 30 / (image.shape[1] * image.shape[2]))]).astype(np.float32)
         image = transform(image)
+        print(image.shape)
         person_images[i, :, :image.shape[2], :image.shape[3]] = image
 
         i += 1
