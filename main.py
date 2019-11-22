@@ -27,6 +27,12 @@ def main():
     predictor = DefaultPredictor(detectron_cfg)
     outputs = predictor(im)
 
+    from detectron2.utils.visualizer import Visualizer
+    from detectron2.data import MetadataCatalog
+    v = Visualizer(im[:, :, ::-1], MetadataCatalog.get(detectron_cfg.DATASETS.TRAIN[0]), scale=1.2)
+    v = v.draw_instance_predictions(outputs["instances"].to("cpu"))
+    cv2.imwrite("output.jpg", v.get_image()[:, :, ::-1])
+
     person_boxes = outputs["instances"].pred_boxes[outputs["instances"].pred_classes == 0]
 
     person_images = np.zeros((len(person_boxes), 3, 256, 256))
@@ -63,8 +69,8 @@ def main():
     for i, box in enumerate(person_boxes):
         rootnet_preds[i][0] += box[1]
         rootnet_preds[i][1] += box[0]
-        cv2.circle(im, (rootnet_preds[i][1], rootnet_preds[i][0]), 5, (0, 0, 255), 0)
-    cv2.imwrite("output.jpg", im)
+        # cv2.circle(im, (rootnet_preds[i][1], rootnet_preds[i][0]), 5, (0, 0, 255), 0)
+    # cv2.imwrite("output.jpg", im)
 
     posenet_cfg.set_args('0')
 
