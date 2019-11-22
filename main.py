@@ -18,14 +18,13 @@ def main():
     cfg.MODEL.WEIGHTS = "detectron2://COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x/137849600/model_final_f10217.pkl"
     predictor = DefaultPredictor(cfg)
     outputs = predictor(im)
+
     person_boxes = outputs["instances"].pred_boxes[outputs["instances"].pred_classes == 0]
     person_images = []
     for box in person_boxes:
         box = box.cpu().numpy().astype(int)
         image = im[box[1]:box[3], box[0]: box[2]]
         person_images.append(image)
-
-    test_img = person_images[0]
 
     import argparse
     from rootnet_repo.main.config import cfg
@@ -36,8 +35,6 @@ def main():
     import math
     import torchvision.transforms as transforms
 
-    parser = argparse.ArgumentParser()
-    args = parser.parse_args()
     cfg.set_args(gpu_ids='0')
     cudnn.fastest = True
     cudnn.benchmark = True
@@ -49,21 +46,24 @@ def main():
 
     preds = []
 
-    k_value = np.array([math.sqrt(2000 * 2000 * 35 * 35 / (test_img.shape[0] * test_img.shape[1]))]).astype(np.float32)
-    k_value = torch.Tensor(k_value)
+    for image in person_images:
+        k_value = np.array([math.sqrt(2000 * 2000 * 30 * 30 / (image.shape[0] * image.shape[1]))]).astype(np.float32)
+        k_value = torch.Tensor(k_value)
 
-    test_img = cv2.resize(test_img, (256, 256))
-    transform = transforms.Compose([ \
-        transforms.ToTensor(),
-        transforms.Normalize(mean=cfg.pixel_mean, std=cfg.pixel_std)] \
-        )
-    test_img = transform(test_img)
-    test_img = torch.unsqueeze(test_img, 0)
+        image = cv2.resize(image, (256, 256))
+        transform = transforms.Compose([ \
+            transforms.ToTensor(),
+            transforms.Normalize(mean=cfg.pixel_mean, std=cfg.pixel_std)] \
+            )
+        image = transform(image)
+        image = torch.unsqueeze(image, 0)
 
-    with torch.no_grad():
-        coord_out = tester.model(test_img, k_value)
-        print(coord_out)
-
+        with torch.no_grad():
+            coord_out = tester.model(image, k_value)
+            coord_out = coord_out.cpu().numpy()
+            preds.append(coord_out)
+    preds = np.concatenate(preds, axis=0)
+    print(preds)
 
 if __name__ == "__main__":
     main()
