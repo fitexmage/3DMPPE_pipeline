@@ -3,13 +3,25 @@ import numpy as np
 import cv2
 import random
 
-from detectron2.engine import DefaultPredictor
-from detectron2.config import get_cfg
-from detectron2.utils.visualizer import Visualizer
-from detectron2.data import MetadataCatalog
+
+
+# from detectron2.engine import DefaultPredictor
+# from detectron2.config import get_cfg
+# from detectron2.utils.visualizer import Visualizer
+# from detectron2.data import MetadataCatalog
 
 def main():
     im = cv2.imread("./input.jpg")
+
+    import exifread
+    # Open image file for reading (binary mode)
+    f = open("./WechatIMG7.jpeg", 'rb')
+
+    # Return Exif tags
+    tags = exifread.process_file(f)
+    print(tags)
+    cv2.calibrateCamera()
+
     cfg = get_cfg()
     cfg.merge_from_file("./detectron2_repo/configs/COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml")
     cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.5  # set threshold for this model
@@ -32,10 +44,11 @@ def main():
     from rootnet_repo.common.base import Tester
     from rootnet_repo.common.utils.pose_utils import flip
     import torch.backends.cudnn as cudnn
+    import math
 
     parser = argparse.ArgumentParser()
     args = parser.parse_args()
-    cfg.set_args(gpu_ids="0")
+    cfg.set_args(gpu_ids='0')
     cudnn.fastest = True
     cudnn.benchmark = True
     cudnn.deterministic = False
@@ -46,8 +59,10 @@ def main():
 
     preds = []
 
+    k_value = np.array([math.sqrt(2000 * 2000 * 1500 * 1500 / (test_img.shape[0] * test_img.shape[1]))]).astype(np.float32)
+
     with torch.no_grad():
-        coord_out = tester.model(test_img)
+        coord_out = tester.model(test_img, k_value)
         print(type(coord_out))
 
 
