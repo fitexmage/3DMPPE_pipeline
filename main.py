@@ -71,9 +71,9 @@ def main():
         print(rootnet_preds)
 
     for i, box in enumerate(person_boxes):
-        rootnet_preds[i][0] += box[1]
-        rootnet_preds[i][1] += box[0]
-        cv2.circle(im, (rootnet_preds[i][1], rootnet_preds[i][0]), 5, (0, 0, 255), 0)
+        rootnet_preds[i][0] += box[0]
+        rootnet_preds[i][1] += box[1]
+        cv2.circle(im, (rootnet_preds[i][0], rootnet_preds[i][1]), 5, (0, 0, 255), 0)
     cv2.imwrite("output.jpg", im)
 
     posenet_cfg.set_args('0')
@@ -86,6 +86,8 @@ def main():
         posenet_preds = posenet_tester.model(person_images)
         posenet_preds = posenet_preds.cpu().numpy()
         print(posenet_preds[0])
+        # for pred in posenet_preds:
+            # cv2.circle(im, (pred[0], rootnet_preds[i][0]), 5, (0, 0, 255), 0)
 
 
 if __name__ == "__main__":
