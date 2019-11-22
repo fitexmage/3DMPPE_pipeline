@@ -27,6 +27,7 @@ def main():
     import torch.backends.cudnn as cudnn
     import math
     import torchvision.transforms as transforms
+    from rootnet_repo.data.dataset import generate_patch_image
 
     person_boxes = outputs["instances"].pred_boxes[outputs["instances"].pred_classes == 0]
 
@@ -42,8 +43,8 @@ def main():
 
     for box in person_boxes:
         box = box.cpu().numpy().astype(int)
-        image = im[box[1]:box[3], box[0]: box[2]]
-        image = image.astype(np.float32)
+        # image = im[box[1]:box[3], box[0]: box[2]]
+        image = generate_patch_image(im, box, False, 0)
         k_values[i] = np.array([math.sqrt(2000 * 2000 * 30 * 30 / (image.shape[1] * image.shape[2]))]).astype(np.float32)
         image = transform(image)
         person_images[i, :, :image.shape[1], :image.shape[2]] = image
