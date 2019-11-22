@@ -37,13 +37,13 @@ def main():
 
     parser = argparse.ArgumentParser()
     args = parser.parse_args()
-    cfg.set_args(args.gpu_ids)
+    cfg.set_args(0)
     cudnn.fastest = True
     cudnn.benchmark = True
     cudnn.deterministic = False
     cudnn.enabled = True
 
-    tester = Tester(args.test_epoch)
+    tester = Tester(18)
     tester._make_batch_generator()
     tester._make_model()
 
