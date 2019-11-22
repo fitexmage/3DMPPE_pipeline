@@ -30,7 +30,7 @@ def main():
 
     person_boxes = outputs["instances"].pred_boxes[outputs["instances"].pred_classes == 0]
 
-    person_images = np.zeros((len(person_boxes), 3, 256, 256))
+    person_images = np.zeros((len(person_boxes), 256, 256, 3))
     k_values = np.zeros((len(person_boxes), 1))
 
     transform = transforms.Compose([
@@ -44,7 +44,7 @@ def main():
         box = box.cpu().numpy().astype(int)
         image = im[box[1]:box[3], box[0]: box[2]]
         image = cv2.resize(image, (256, 256))
-        image = np.transpose(image, (2, 0, 1))
+        # image = np.transpose(image, (2, 0, 1))
         image = transform(image)
         person_images[i] = image
         k_values[i] = np.array([math.sqrt(2000 * 2000 * 30 * 30 / (image.shape[1] * image.shape[2]))]).astype(np.float32)
