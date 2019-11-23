@@ -1,8 +1,9 @@
 import torch
+import numpy as np
 
 from posenet_repo.main.config import cfg as posenet_cfg
 from posenet_repo.common.base import Tester as posenet_Test
-from posenet_repo.common.utils.pose_utils import warp_coord_to_original, flip
+from posenet_repo.common.utils.pose_utils import pixel2cam, warp_coord_to_original, flip
 
 from config import cfg as pipeline_cfg
 
@@ -30,8 +31,10 @@ def get_pose(person_boxes, person_images, rootnet_preds):
 
     for i, box in enumerate(person_boxes):
         posenet_pred = posenet_preds[i]
-        posenet_pred[:, 0], posenet_pred[:, 1], posenet_pred[:, 2] = warp_coord_to_original(posenet_pred, box,
-                                                                                            rootnet_preds[i])
+        posenet_pred[:, 0], posenet_pred[:, 1], posenet_pred[:, 2] = warp_coord_to_original(posenet_pred, box, rootnet_preds[i])
+
+        if pipeline_cfg.get_3d:
+            posenet_pred[:, 0], posenet_pred[:, 1], posenet_pred[:, 2] = pixel2cam(posenet_pred, pipeline_cfg.f, np.array([box[2]/2, box[3]/2]))
 
         # for i in range(len(posenet_pred)):
         #     cv2.circle(image, (posenet_pred[i][0], posenet_pred[i][1]), 5, (0, 0, 255), -1)
