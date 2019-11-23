@@ -14,6 +14,7 @@ from rootnet_repo.data.dataset import generate_patch_image
 
 from posenet_repo.main.config import cfg as posenet_cfg
 from posenet_repo.common.base import Tester as posenet_Test
+from posenet_repo.common.utils.pose_utils import warp_coord_to_original
 
 def main():
 
@@ -38,6 +39,14 @@ def main():
     if len(person_boxes) == 0:
         return
 
+    list = []
+    for i, box in enumerate(person_boxes):
+        box = box.cpu().numpy()
+        box = np.array([box[0], box[1], box[2] - box[0], box[3] - box[1]])
+        list.append(box)
+    person_boxes = list
+    print(person_boxes)
+
     person_images = np.zeros((len(person_boxes), 3, 256, 256))
     k_values = np.zeros((len(person_boxes), 1))
 
@@ -47,8 +56,6 @@ def main():
     )
 
     for i, box in enumerate(person_boxes):
-        box = box.cpu().numpy()
-        box = np.array([box[0], box[1], box[2] - box[0], box[3] - box[1]])
         image, _ = generate_patch_image(im, box, False, 0)
         image = transform(image)
         person_images[i] = image
@@ -72,11 +79,9 @@ def main():
 
     for i, box in enumerate(person_boxes):
         rootnet_pred = rootnet_preds[i]
-        rootnet_pred[0] = rootnet_pred[0] / rootnet_cfg.output_shape[1] * (box[2] - box[0]) + box[0]
-        rootnet_pred[1] = rootnet_pred[1] / rootnet_cfg.output_shape[0] * (box[3] - box[1]) + box[1]
-
-    for i, box in enumerate(person_boxes):
-        cv2.circle(im, (rootnet_preds[i][0], rootnet_preds[i][1]), 3, (0, 0, 255), -1)
+        rootnet_pred[0] = rootnet_pred[0] / rootnet_cfg.output_shape[1] * box[2] + box[0]
+        rootnet_pred[1] = rootnet_pred[1] / rootnet_cfg.output_shape[0] * box[3] + box[1]
+        # cv2.circle(im, (rootnet_preds[i][0], rootnet_preds[i][1]), 5, (0, 0, 255), -1)
 
     posenet_cfg.set_args('0')
 
@@ -89,10 +94,14 @@ def main():
         posenet_preds = posenet_tester.model(person_images)
         posenet_preds = posenet_preds.cpu().numpy()
 
+    for i, box in enumerate(person_boxes):
+        posenet_pred = posenet_preds[i]
+        # posenet_pred[:, 0], posenet_pred[:, 1], posenet_pred[:, 2] = warp_coord_to_original(posenet_pred, box, gt_3d_root)
+
     # for i, box in enumerate(person_boxes):
     #     for joint in posenet_preds[i]:
     #         cv2.circle(im, (joint[0], joint[1]), 5, (0, 0, 255), 0)
-    cv2.imwrite("output.jpg", im)
+    # cv2.imwrite("output.jpg", im)
 
 if __name__ == "__main__":
     main()
