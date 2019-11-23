@@ -12,6 +12,7 @@ def main():
 
     person_images, k_values = get_input(image, person_boxes)
     rootnet_preds = get_root(person_boxes, person_images, k_values)
+    print(rootnet_preds)
     posenet_preds = get_pose(person_boxes, person_images, rootnet_preds)
     print(posenet_preds)
     # cv2.imwrite("output.jpg", image)
