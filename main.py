@@ -106,8 +106,9 @@ def main():
         posenet_pred = posenet_preds[i]
         posenet_pred[:, 0], posenet_pred[:, 1], posenet_pred[:, 2] = warp_coord_to_original(posenet_pred, box, rootnet_preds[i])
 
-        for joint in posenet_pred:
-            cv2.circle(im, (joint[0], joint[1]), 5, (0, 0, 255), -1)
+        for i in range(len(posenet_pred)):
+            cv2.circle(im, (posenet_pred[i][0], posenet_pred[i][1]), 5, (0, 0, 255), -1)
+            cv2.putText(im, pipeline_cfg.joints_name[i], (posenet_pred[i][0], posenet_pred[i][1]), cv2.FONT_HERSHEY_PLAIN, 1, (0, 255, 0), 1)
     cv2.imwrite("output.jpg", im)
 
 if __name__ == "__main__":
