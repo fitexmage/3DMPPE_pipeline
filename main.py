@@ -87,6 +87,7 @@ def main():
         print(posenet_preds)
         print(posenet_preds.shape)
     for i, box in enumerate(person_boxes):
+        print(box[0])
         posenet_preds[i, : ,0] += box[0]
         posenet_preds[i, :, 1] += box[1]
         for joint in posenet_preds[i]:
