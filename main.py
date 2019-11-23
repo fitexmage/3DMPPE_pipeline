@@ -50,8 +50,6 @@ def main():
         box = box.cpu().numpy()
         box = np.array([box[0], box[1], box[2] - box[0], box[3] - box[1]])
         image, _ = generate_patch_image(im, box, False, 0)
-        if i == 0:
-            cv2.imwrite("output.jpg", image)
         image = transform(image)
         person_images[i] = image
         k_values[i] = np.array([math.sqrt(rootnet_cfg.bbox_real[0] * rootnet_cfg.bbox_real[1] * 1500 * 1500 / (box[3] * box[2]))]).astype(np.float32)
@@ -78,7 +76,7 @@ def main():
         rootnet_pred[1] = rootnet_pred[1] / rootnet_cfg.output_shape[0] * (box[3] - box[1]) + box[1]
 
     for i, box in enumerate(person_boxes):
-        cv2.circle(im, (rootnet_preds[i][0], rootnet_preds[i][1]), 5, (0, 0, 255), 0)
+        cv2.circle(im, (rootnet_preds[i][0], rootnet_preds[i][1]), 3, (0, 0, 255), -1)
 
     posenet_cfg.set_args('0')
 
@@ -94,7 +92,7 @@ def main():
     # for i, box in enumerate(person_boxes):
     #     for joint in posenet_preds[i]:
     #         cv2.circle(im, (joint[0], joint[1]), 5, (0, 0, 255), 0)
-    # cv2.imwrite("output.jpg", im)
+    cv2.imwrite("output.jpg", im)
 
 if __name__ == "__main__":
     main()
