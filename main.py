@@ -55,7 +55,7 @@ def main():
         image = transform(image)
         person_images[i] = image
         k_values[i] = np.array([math.sqrt(rootnet_cfg.bbox_real[0] * rootnet_cfg.bbox_real[1] * 1500 * 1500 / ((box[3] - box[1]) * (box[2] - box[0])))]).astype(np.float32)
-
+    print(numpy_box)
     person_images = torch.Tensor(person_images)
     k_values = torch.Tensor(k_values)
 
