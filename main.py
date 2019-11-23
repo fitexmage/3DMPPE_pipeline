@@ -2,114 +2,47 @@ import numpy as np
 import cv2
 import math
 import torch
-import torch.backends.cudnn as cudnn
 import torchvision.transforms as transforms
 
-from detectron2.engine import DefaultPredictor
-from detectron2.config import get_cfg
-
-from rootnet_repo.main.config import cfg as rootnet_cfg
-from rootnet_repo.common.base import Tester as rootnet_Tester
 from rootnet_repo.data.dataset import generate_patch_image
 
-from posenet_repo.main.config import cfg as posenet_cfg
-from posenet_repo.common.base import Tester as posenet_Test
-from posenet_repo.common.utils.pose_utils import warp_coord_to_original, flip
-
+from detectnet import get_bounding_boxes
+from rootnet import get_root
+from posenet import get_pose
 from config import cfg as pipeline_cfg
 
-def main():
-
-    im = cv2.imread("./input.jpg")
-
-    detectron_cfg = get_cfg()
-    detectron_cfg.merge_from_file("./detectron2_repo/configs/COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml")
-    detectron_cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.5  # set threshold for this model
-    # Find a model from detectron2's model zoo. You can either use the https://dl.fbaipublicfiles.... url, or use the following shorthand
-    detectron_cfg.MODEL.WEIGHTS = "detectron2://COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x/137849600/model_final_f10217.pkl"
-    predictor = DefaultPredictor(detectron_cfg)
-    outputs = predictor(im)
-
-    # from detectron2.utils.visualizer import Visualizer
-    # from detectron2.data import MetadataCatalog
-    # v = Visualizer(im[:, :, ::-1], MetadataCatalog.get(detectron_cfg.DATASETS.TRAIN[0]), scale=1.2)
-    # v = v.draw_instance_predictions(outputs["instances"].to("cpu"))
-    # cv2.imwrite("output.jpg", v.get_image()[:, :, ::-1])
-
-    person_boxes = outputs["instances"].pred_boxes[outputs["instances"].pred_classes == 0]
-
-    if len(person_boxes) == 0:
-        return
-
-    list = []
-    for i, box in enumerate(person_boxes):
-        box = box.cpu().numpy()
-        box = np.array([box[0], box[1], box[2] - box[0], box[3] - box[1]])
-        list.append(box)
-    person_boxes = list
-
-    person_images = np.zeros((len(person_boxes), 3, rootnet_cfg.input_shape[0], rootnet_cfg.input_shape[1]))
+def get_input(image, person_boxes):
+    person_images = np.zeros((len(person_boxes), 3, pipeline_cfg.input_shape[0], pipeline_cfg.input_shape[1]))
     k_values = np.zeros((len(person_boxes), 1))
 
     transform = transforms.Compose([
         transforms.ToTensor(),
-        transforms.Normalize(mean=rootnet_cfg.pixel_mean, std=rootnet_cfg.pixel_std)]
+        transforms.Normalize(mean=pipeline_cfg.pixel_mean, std=pipeline_cfg.pixel_std)]
     )
 
     for i, box in enumerate(person_boxes):
-        image, _ = generate_patch_image(im, box, False, 0)
+        image, _ = generate_patch_image(image, box, False, 0)
         image = transform(image)
         person_images[i] = image
-        k_values[i] = np.array([math.sqrt(rootnet_cfg.bbox_real[0] * rootnet_cfg.bbox_real[1] * 1500 * 1500 / (box[3] * box[2]))]).astype(np.float32)
+        k_values[i] = np.array(
+            [math.sqrt(pipeline_cfg.bbox_real[0] * pipeline_cfg.bbox_real[1] * 1500 * 1500 / (box[3] * box[2]))]).astype(
+            np.float32)
 
     person_images = torch.Tensor(person_images)
     k_values = torch.Tensor(k_values)
 
-    rootnet_cfg.set_args(gpu_ids='0')
-    cudnn.fastest = True
-    cudnn.benchmark = True
-    cudnn.deterministic = False
-    cudnn.enabled = True
+    return person_images, k_values
 
-    rootnet_tester = rootnet_Tester(pipeline_cfg.rootnet_model_inx)
-    rootnet_tester._make_model()
+def main():
+    image = cv2.imread("./input.jpg")
+    person_boxes = get_bounding_boxes(image)
+    if len(person_boxes) == 0:
+        return
 
-    with torch.no_grad():
-        rootnet_preds = rootnet_tester.model(person_images, k_values)
-        rootnet_preds = rootnet_preds.cpu().numpy()
-
-    for i, box in enumerate(person_boxes):
-        rootnet_pred = rootnet_preds[i]
-        rootnet_pred[0] = rootnet_pred[0] / rootnet_cfg.output_shape[1] * box[2] + box[0]
-        rootnet_pred[1] = rootnet_pred[1] / rootnet_cfg.output_shape[0] * box[3] + box[1]
-        # cv2.circle(im, (rootnet_preds[i][0], rootnet_preds[i][1]), 5, (0, 0, 255), -1)
-
-    posenet_cfg.set_args('0')
-
-    posenet_tester = posenet_Test(pipeline_cfg.posenet_model_inx)
-    posenet_tester.joint_num = pipeline_cfg.joint_num
-    posenet_tester._make_model()
-
-    with torch.no_grad():
-        posenet_preds = posenet_tester.model(person_images)
-        flipped_input_img = flip(person_images, dims=3)
-        flipped_coord_out = posenet_tester.model(flipped_input_img)
-        flipped_coord_out[:, :, 0] = posenet_cfg.output_shape[1] - flipped_coord_out[:, :, 0] - 1
-
-        for pair in pipeline_cfg.flip_pairs:
-            flipped_coord_out[:, pair[0], :], flipped_coord_out[:, pair[1], :] = flipped_coord_out[:, pair[1], :].clone(), flipped_coord_out[:, pair[0], :].clone()
-
-        posenet_preds = (posenet_preds + flipped_coord_out) / 2.
-        posenet_preds = posenet_preds.cpu().numpy()
-
-    for i, box in enumerate(person_boxes):
-        posenet_pred = posenet_preds[i]
-        posenet_pred[:, 0], posenet_pred[:, 1], posenet_pred[:, 2] = warp_coord_to_original(posenet_pred, box, rootnet_preds[i])
-
-        for i in range(len(posenet_pred)):
-            cv2.circle(im, (posenet_pred[i][0], posenet_pred[i][1]), 5, (0, 0, 255), -1)
-            cv2.putText(im, pipeline_cfg.joints_name[i], (posenet_pred[i][0], posenet_pred[i][1]), cv2.FONT_HERSHEY_TRIPLEX, 0.5, (0, 255, 0), 1)
-    cv2.imwrite("output.jpg", im)
+    person_images, k_values = get_input(image, person_boxes)
+    rootnet_preds = get_root(person_boxes, person_images, k_values)
+    posenet_preds = get_pose(person_boxes, person_images, rootnet_preds)
+    # cv2.imwrite("output.jpg", image)
 
 if __name__ == "__main__":
     main()
