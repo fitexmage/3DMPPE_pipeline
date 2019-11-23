@@ -39,12 +39,13 @@ def main():
     if len(person_boxes) == 0:
         return
 
-    list = []
-    for i, box in enumerate(person_boxes):
-        box = box.cpu().numpy()
-        box = np.array([box[0], box[1], box[2] - box[0], box[3] - box[1]])
-        list.append(box)
-    person_boxes = list
+    # list = []
+    # for i, box in enumerate(person_boxes):
+    #     box = box.cpu().numpy()
+    #     box = np.array([box[0], box[1], box[2] - box[0], box[3] - box[1]])
+    #     list.append(box)
+    # person_boxes = list
+    person_boxes = [np.array([box[0], box[1], box[2] - box[0], box[3] - box[1]]) for i, box in enumerate(person_boxes)]
     print(person_boxes)
 
     person_images = np.zeros((len(person_boxes), 3, 256, 256))
