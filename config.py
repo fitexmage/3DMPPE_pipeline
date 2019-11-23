@@ -29,10 +29,4 @@ class Config:
     rootnet_model_inx = 18
     posenet_model_inx = 24
 
-    input_shape = rootnet_cfg.input_shape
-    output_shape = rootnet_cfg.output_shape
-    pixel_mean = rootnet_cfg.pixel_mean
-    pixel_std = rootnet_cfg.pixel_std
-    bbox_real = rootnet_cfg.bbox_real
-
 cfg = Config()
