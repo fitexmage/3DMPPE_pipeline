@@ -45,7 +45,7 @@ def main():
         transforms.ToTensor(),
         transforms.Normalize(mean=rootnet_cfg.pixel_mean, std=rootnet_cfg.pixel_std)]
     )
-    print(person_boxes)
+    print(person_boxes.cpu().numpy.astype(int))
     for i, box in enumerate(person_boxes):
         box = box.cpu().numpy().astype(int)
         image, _ = generate_patch_image(im, box, False, 0)
@@ -88,7 +88,7 @@ def main():
         print(posenet_preds.shape)
     for i, box in enumerate(person_boxes):
         print(box[0])
-        posenet_preds[i, : ,0] += box[0]
+        posenet_preds[i, : ,0] += box[0].cpu().numpy
         posenet_preds[i, :, 1] += box[1]
         for joint in posenet_preds[i]:
             cv2.circle(im, (joint[0], joint[1]), 5, (0, 0, 255), 0)
