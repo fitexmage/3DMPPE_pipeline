@@ -55,7 +55,7 @@ def main():
         image = transform(image)
         person_images[i] = image
         k_values[i] = np.array([math.sqrt(rootnet_cfg.bbox_real[0] * rootnet_cfg.bbox_real[1] * 1500 * 1500 / ((box[3] - box[1]) * (box[2] - box[0])))]).astype(np.float32)
-    print(numpy_box)
+
     person_images = torch.Tensor(person_images)
     k_values = torch.Tensor(k_values)
 
@@ -72,13 +72,10 @@ def main():
         rootnet_preds = rootnet_tester.model(person_images, k_values)
         rootnet_preds = rootnet_preds.cpu().numpy()
 
-    print(rootnet_preds)
     rootnet_preds += numpy_box
-    print(rootnet_preds)
-    # for i, box in enumerate(person_boxes):
-    #     rootnet_preds[i][0] += box[0]
-    #     rootnet_preds[i][1] += box[1]
-        # cv2.circle(im, (rootnet_preds[i][0], rootnet_preds[i][1]), 5, (0, 0, 255), 0)
+
+    for i, box in enumerate(person_boxes):
+        cv2.circle(im, (rootnet_preds[i][0], rootnet_preds[i][1]), 5, (0, 0, 255), 0)
 
     posenet_cfg.set_args('0')
 
@@ -91,17 +88,12 @@ def main():
         posenet_preds = posenet_tester.model(person_images)
         posenet_preds = posenet_preds.cpu().numpy()
 
-    print(posenet_preds)
-    print(posenet_preds.shape)
-
     posenet_preds += numpy_box[:, np.newaxis, :]
-    print(posenet_preds)
-    # for i, box in enumerate(person_boxes):
-    #     posenet_preds[i, : ,0] += np.reshape(box[0].cpu().numpy, )
-    #     posenet_preds[i, :, 1] += box[1]
-    #     for joint in posenet_preds[i]:
-    #         cv2.circle(im, (joint[0], joint[1]), 5, (0, 0, 255), 0)
-    # cv2.imwrite("output.jpg", im)
+
+    for i, box in enumerate(person_boxes):
+        for joint in posenet_preds[i]:
+            cv2.circle(im, (joint[0], joint[1]), 5, (0, 0, 255), 0)
+    cv2.imwrite("output.jpg", im)
 
 if __name__ == "__main__":
     main()
