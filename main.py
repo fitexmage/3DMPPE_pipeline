@@ -108,7 +108,7 @@ def main():
 
         for i in range(len(posenet_pred)):
             cv2.circle(im, (posenet_pred[i][0], posenet_pred[i][1]), 5, (0, 0, 255), -1)
-            cv2.putText(im, pipeline_cfg.joints_name[i], (posenet_pred[i][0], posenet_pred[i][1]), cv2.FONT_HERSHEY_TRIPLEX, 1, (0, 255, 0), 1)
+            cv2.putText(im, pipeline_cfg.joints_name[i], (posenet_pred[i][0], posenet_pred[i][1]), cv2.FONT_HERSHEY_TRIPLEX, 0.1, (0, 255, 0), 1)
     cv2.imwrite("output.jpg", im)
 
 if __name__ == "__main__":
