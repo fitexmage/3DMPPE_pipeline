@@ -95,7 +95,7 @@ def main():
         flipped_list = []
 
         for image in person_images:
-            flipped_input_img = flip(image, dims=3)
+            flipped_input_img = flip(image, dims=[3])
             flipped_coord_out = posenet_tester.model(flipped_input_img)
             flipped_coord_out[:, :, 0] = posenet_cfg.output_shape[1] - flipped_coord_out[:, :, 0] - 1
 
