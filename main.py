@@ -45,7 +45,7 @@ def main():
         transforms.ToTensor(),
         transforms.Normalize(mean=rootnet_cfg.pixel_mean, std=rootnet_cfg.pixel_std)]
     )
-    print(person_boxes)
+
     for i, box in enumerate(person_boxes):
         box = box.cpu().numpy()
         box = np.array([box[0], box[1], box[2] - box[0], box[3] - box[1]])
@@ -53,7 +53,7 @@ def main():
         image = transform(image)
         person_images[i] = image
         k_values[i] = np.array([math.sqrt(rootnet_cfg.bbox_real[0] * rootnet_cfg.bbox_real[1] * 1500 * 1500 / ((box[3] - box[1]) * (box[2] - box[0])))]).astype(np.float32)
-    print(person_boxes)
+
     person_images = torch.Tensor(person_images)
     k_values = torch.Tensor(k_values)
 
@@ -72,8 +72,8 @@ def main():
 
     for i, box in enumerate(person_boxes):
         rootnet_pred = rootnet_preds[i]
-        rootnet_pred[0] = rootnet_pred[0] / rootnet_cfg.output_shape[1] * box[2] + box[0]
-        rootnet_pred[1] = rootnet_pred[1] / rootnet_cfg.output_shape[0] * box[3] + box[1]
+        rootnet_pred[0] = rootnet_pred[0] / rootnet_cfg.output_shape[1] * (box[2] - box[0]) + box[0]
+        rootnet_pred[1] = rootnet_pred[1] / rootnet_cfg.output_shape[0] * (box[3] - box[1]) + box[1]
 
     for i, box in enumerate(person_boxes):
         cv2.circle(im, (rootnet_preds[i][0], rootnet_preds[i][1]), 5, (0, 0, 255), 0)
@@ -92,7 +92,7 @@ def main():
     # for i, box in enumerate(person_boxes):
     #     for joint in posenet_preds[i]:
     #         cv2.circle(im, (joint[0], joint[1]), 5, (0, 0, 255), 0)
-    # cv2.imwrite("output.jpg", im)
+    cv2.imwrite("output.jpg", im)
 
 if __name__ == "__main__":
     main()
