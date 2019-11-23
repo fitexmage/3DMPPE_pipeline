@@ -39,14 +39,12 @@ def main():
     if len(person_boxes) == 0:
         return
 
-    # list = []
-    # for i, box in enumerate(person_boxes):
-    #     box = box.cpu().numpy()
-    #     box = np.array([box[0], box[1], box[2] - box[0], box[3] - box[1]])
-    #     list.append(box)
-    # person_boxes = list
-    person_boxes = [np.array([box[0], box[1], box[2] - box[0], box[3] - box[1]]) for i, box in enumerate(person_boxes)]
-    print(person_boxes)
+    list = []
+    for i, box in enumerate(person_boxes):
+        box = box.cpu().numpy()
+        box = np.array([box[0], box[1], box[2] - box[0], box[3] - box[1]])
+        list.append(box)
+    person_boxes = list
 
     person_images = np.zeros((len(person_boxes), 3, 256, 256))
     k_values = np.zeros((len(person_boxes), 1))
@@ -97,12 +95,11 @@ def main():
 
     for i, box in enumerate(person_boxes):
         posenet_pred = posenet_preds[i]
-        # posenet_pred[:, 0], posenet_pred[:, 1], posenet_pred[:, 2] = warp_coord_to_original(posenet_pred, box, gt_3d_root)
+        posenet_pred[:, 0], posenet_pred[:, 1], posenet_pred[:, 2] = warp_coord_to_original(posenet_pred, box, rootnet_pred[i])
 
-    # for i, box in enumerate(person_boxes):
-    #     for joint in posenet_preds[i]:
-    #         cv2.circle(im, (joint[0], joint[1]), 5, (0, 0, 255), 0)
-    # cv2.imwrite("output.jpg", im)
+        for joint in posenet_pred:
+            cv2.circle(im, (joint[0], joint[1]), 5, (0, 0, 255), 0)
+    cv2.imwrite("output.jpg", im)
 
 if __name__ == "__main__":
     main()
