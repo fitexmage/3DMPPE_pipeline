@@ -98,7 +98,7 @@ def main():
         posenet_pred[:, 0], posenet_pred[:, 1], posenet_pred[:, 2] = warp_coord_to_original(posenet_pred, box, rootnet_preds[i])
 
         for joint in posenet_pred:
-            cv2.circle(im, (joint[0], joint[1]), 5, (0, 0, 255), 0)
+            cv2.circle(im, (joint[0], joint[1]), 5, (0, 0, 255), -1)
     cv2.imwrite("output.jpg", im)
 
 if __name__ == "__main__":
