@@ -46,11 +46,8 @@ def main():
         transforms.Normalize(mean=rootnet_cfg.pixel_mean, std=rootnet_cfg.pixel_std)]
     )
 
-    numpy_box = np.zeros((len(person_boxes), 3))
     for i, box in enumerate(person_boxes):
         box = box.cpu().numpy()
-        numpy_box[i][0] = box[0]
-        numpy_box[i][1] = box[1]
         image, _ = generate_patch_image(im, box, False, 0)
         image = transform(image)
         person_images[i] = image
@@ -71,9 +68,12 @@ def main():
     with torch.no_grad():
         rootnet_preds = rootnet_tester.model(person_images, k_values)
         rootnet_preds = rootnet_preds.cpu().numpy()
-
-    rootnet_preds += numpy_box
-
+    print(rootnet_preds)
+    for i, box in enumerate(person_boxes):
+        rootnet_pred = rootnet_preds[i]
+        rootnet_pred[0] = rootnet_pred[0] / rootnet_cfg.output_shape[1] * box[2] + box[0]
+        rootnet_pred[1] = rootnet_pred[1] / rootnet_cfg.output_shape[0] * box[3] + box[1]
+    print(rootnet_preds)
     for i, box in enumerate(person_boxes):
         cv2.circle(im, (rootnet_preds[i][0], rootnet_preds[i][1]), 5, (0, 0, 255), 0)
 
@@ -88,11 +88,9 @@ def main():
         posenet_preds = posenet_tester.model(person_images)
         posenet_preds = posenet_preds.cpu().numpy()
 
-    posenet_preds += numpy_box[:, np.newaxis, :]
-
-    for i, box in enumerate(person_boxes):
-        for joint in posenet_preds[i]:
-            cv2.circle(im, (joint[0], joint[1]), 5, (0, 0, 255), 0)
+    # for i, box in enumerate(person_boxes):
+    #     for joint in posenet_preds[i]:
+    #         cv2.circle(im, (joint[0], joint[1]), 5, (0, 0, 255), 0)
     cv2.imwrite("output.jpg", im)
 
 if __name__ == "__main__":
