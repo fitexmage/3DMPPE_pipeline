@@ -51,7 +51,7 @@ def main():
         box = np.array([box[0], box[1], box[2] - box[0], box[3] - box[1]])
         image, _ = generate_patch_image(im, box, False, 0)
         if i == 0:
-            cv2.imwrite("output.jpg", im)
+            cv2.imwrite("output.jpg", image)
         image = transform(image)
         person_images[i] = image
         k_values[i] = np.array([math.sqrt(rootnet_cfg.bbox_real[0] * rootnet_cfg.bbox_real[1] * 1500 * 1500 / (box[3] * box[2]))]).astype(np.float32)
