@@ -30,6 +30,6 @@ class Config:
     posenet_model_inx = 24
     f = np.array([1500, 1500])
 
-    get_3d = False
+    get_3d = True
 
 cfg = Config()
