@@ -14,7 +14,9 @@ from rootnet_repo.data.dataset import generate_patch_image
 
 from posenet_repo.main.config import cfg as posenet_cfg
 from posenet_repo.common.base import Tester as posenet_Test
-from posenet_repo.common.utils.pose_utils import warp_coord_to_original
+from posenet_repo.common.utils.pose_utils import warp_coord_to_original, flip
+
+from config import cfg as pipeline_cfg
 
 def main():
 
@@ -46,7 +48,7 @@ def main():
         list.append(box)
     person_boxes = list
 
-    person_images = np.zeros((len(person_boxes), 3, 256, 256))
+    person_images = np.zeros((len(person_boxes), 3, rootnet_cfg.input_shape[0], rootnet_cfg.input_shape[1]))
     k_values = np.zeros((len(person_boxes), 1))
 
     transform = transforms.Compose([
@@ -69,7 +71,7 @@ def main():
     cudnn.deterministic = False
     cudnn.enabled = True
 
-    rootnet_tester = rootnet_Tester(18)
+    rootnet_tester = rootnet_Tester(pipeline_cfg.rootnet_model_inx)
     rootnet_tester._make_model()
 
     with torch.no_grad():
@@ -84,13 +86,24 @@ def main():
 
     posenet_cfg.set_args('0')
 
-    posenet_tester = posenet_Test(24)
-    joint_num = 21
-    posenet_tester.joint_num = joint_num
+    posenet_tester = posenet_Test(pipeline_cfg.posenet_model_inx)
+    posenet_tester.joint_num = pipeline_cfg.joint_num
     posenet_tester._make_model()
 
     with torch.no_grad():
         posenet_preds = posenet_tester.model(person_images)
+        flipped_list = []
+
+        for image in person_images:
+            flipped_input_img = flip(image, dims=3)
+            flipped_coord_out = posenet_tester.model(flipped_input_img)
+            flipped_coord_out[:, :, 0] = posenet_cfg.output_shape[1] - flipped_coord_out[:, :, 0] - 1
+
+            for pair in pipeline_cfg.flip_pairs:
+                flipped_coord_out[:, pair[0], :], flipped_coord_out[:, pair[1], :] = flipped_coord_out[:, pair[1], :].clone(), flipped_coord_out[:, pair[0], :].clone()
+            flipped_list.append(flipped_coord_out)
+
+        posenet_preds = (posenet_preds + np.array(flipped_coord_out)) / 2.
         posenet_preds = posenet_preds.cpu().numpy()
 
     for i, box in enumerate(person_boxes):
