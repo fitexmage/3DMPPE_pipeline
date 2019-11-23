@@ -48,7 +48,7 @@ def main():
 
     numpy_box = np.zeros((len(person_boxes), 3))
     for i, box in enumerate(person_boxes):
-        box = box.cpu().numpy().astype(int)
+        box = box.cpu().numpy()
         numpy_box[i][0] = box[0]
         numpy_box[i][1] = box[1]
         image, _ = generate_patch_image(im, box, False, 0)
