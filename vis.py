@@ -26,7 +26,7 @@ def visualize(image, preds):
                     (pred[:, 1] < -2500).all() or \
                     (pred[:, 0] > 2500).all() or \
                     (pred[:, 1] > 2500).all() or \
-                    (pred[:, 2] > max_z).all() > min_z + 3500:
+                    (pred[:, 2] > max_z + 3500).all():
                 continue
 
             for l in range(len(pipeline_cfg.skeleton)):
