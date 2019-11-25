@@ -51,7 +51,7 @@ def get_root(person_boxes, person_images, k_values):
         rootnet_pred = rootnet_preds[i]
         rootnet_pred[0] = rootnet_pred[0] / rootnet_cfg.output_shape[1] * box[2] + box[0]
         rootnet_pred[1] = rootnet_pred[1] / rootnet_cfg.output_shape[0] * box[3] + box[1]
-        # cv2.circle(im, (rootnet_preds[i][0], rootnet_preds[i][1]), 5, (0, 0, 255), -1)
-        if pipeline_cfg.to_camera:
-            rootnet_pred[0], rootnet_pred[1], rootnet_pred[2] = pixel2cam(rootnet_pred, pipeline_cfg.f, np.array([box[2]/2, box[3]/2]))
+
+        # if pipeline_cfg.to_camera:
+        #     rootnet_pred[0], rootnet_pred[1], rootnet_pred[2] = pixel2cam(rootnet_pred, pipeline_cfg.f, np.array([box[2]/2, box[3]/2]))
     return rootnet_preds
