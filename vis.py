@@ -25,9 +25,12 @@ def visualize(image, preds):
             if pred[:, 0].all() < -2000 or \
                     pred[:, 1].all() < -2000 or \
                     pred[:, 0].all() > 2000 or \
-                    pred[:, 1].all() > 2000 or pred[:, 2].all() > max_z + 3500:
+                    pred[:, 1].all() > 2000 or \
+                    pred[:, 2].all() > max_z + 3500:
                 continue
-
+            print()
+            print(pred)
+            print()
             for l in range(len(pipeline_cfg.skeleton)):
                 i1 = pipeline_cfg.skeleton[l][0]
                 i2 = pipeline_cfg.skeleton[l][1]
