@@ -28,7 +28,7 @@ def visualize(image, preds):
                     (pred[:, 1] > 2500).all() or \
                     (pred[:, 2] > min_z + 3500).all():
                 continue
-
+            print("a")
             for l in range(len(pipeline_cfg.skeleton)):
                 i1 = pipeline_cfg.skeleton[l][0]
                 i2 = pipeline_cfg.skeleton[l][1]
