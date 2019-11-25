@@ -16,7 +16,7 @@ def main():
     print(rootnet_preds.shape)
     posenet_preds = get_pose(person_boxes, person_images, rootnet_preds)
     print(posenet_preds.shape)
-    visualize_image(image, posenet_preds)
+    visualize_image(person_images, posenet_preds)
     return posenet_preds
 
 if __name__ == "__main__":
