@@ -41,12 +41,15 @@ def visualize(image, preds):
             # y_r = np.array([0, posenet_cfg.input_shape[0]], dtype=np.float32)
             # z_r = np.array([0, 1], dtype=np.float32)
 
+        min_z = np.min(preds[:, :, 2])
+        max_z = np.max(preds[:, :, 2])
+
         ax.set_title('3D vis')
         ax.set_xlabel('X Label')
         ax.set_ylabel('Z Label')
         ax.set_zlabel('Y Label')
         ax.set_xlim([-2000,2000])
-        ax.set_ylim([11000,15000])
+        ax.set_ylim([min_z - 200, min_z + 3800])
         ax.set_zlim([-2000,2000])
         ax.legend()
         plt.savefig(pipeline_cfg.output_path)
