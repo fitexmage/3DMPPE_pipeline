@@ -46,7 +46,7 @@ def visualize(image, preds):
         ax.set_ylabel('Z Label')
         ax.set_zlabel('Y Label')
         ax.set_xlim([-2000,2000])
-        ax.set_ylim([7000,11000])
+        ax.set_ylim([11000,15000])
         ax.set_zlim([-2000,2000])
         ax.legend()
         plt.savefig(pipeline_cfg.output_path)
