@@ -47,7 +47,7 @@ def visualize(image, preds):
         ax.set_ylabel('Z Label')
         ax.set_zlabel('Y Label')
         ax.set_xlim([-2000,2000])
-        ax.set_ylim([14000,16000])
+        ax.set_ylim([14500,16000])
         ax.set_zlim([-2000,2000])
         ax.legend()
         plt.savefig("output.jpg")
