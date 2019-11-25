@@ -49,7 +49,7 @@ class Config:
     flip_pairs = ((2, 5), (3, 6), (4, 7), (8, 11), (9, 12), (10, 13))
     rootnet_model_inx = 18
     posenet_model_inx = 24
-    f = np.array([1500, 1500])
+    f = np.array([1000, 1000])
 
     to_camera = True
     vis = True
