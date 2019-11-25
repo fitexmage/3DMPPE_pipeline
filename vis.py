@@ -20,7 +20,7 @@ def visualize(image, preds):
 
         min_z = np.min(preds[:, :, 2])
         max_z = np.max(preds[:, :, 2])
-
+        count = 0
         for pred in preds:
             if (pred[:, 0] < -2500).all() or \
                     (pred[:, 1] < -2500).all() or \
@@ -28,7 +28,7 @@ def visualize(image, preds):
                     (pred[:, 1] > 2500).all() or \
                     (pred[:, 2] > min_z + 3500).all():
                 continue
-            print("a")
+            count += 1
             for l in range(len(pipeline_cfg.skeleton)):
                 i1 = pipeline_cfg.skeleton[l][0]
                 i2 = pipeline_cfg.skeleton[l][1]
@@ -50,7 +50,7 @@ def visualize(image, preds):
             # x_r = np.array([0, posenet_cfg.input_shape[1]], dtype=np.float32)
             # y_r = np.array([0, posenet_cfg.input_shape[0]], dtype=np.float32)
             # z_r = np.array([0, 1], dtype=np.float32)
-
+        print(count)
         ax.set_title('3D vis')
         ax.set_xlabel('X Label')
         ax.set_ylabel('Z Label')
