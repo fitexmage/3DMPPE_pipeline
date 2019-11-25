@@ -26,7 +26,7 @@ def visualize(image, preds):
                     (pred[:, 1] < -2500).all() or \
                     (pred[:, 0] > 2500).all() or \
                     (pred[:, 1] > 2500).all() or \
-                    (pred[:, 2] > max_z).all() > min_z + 4500:
+                    (pred[:, 2] > max_z).all() > min_z + 3500:
                 continue
 
             for l in range(len(pipeline_cfg.skeleton)):
@@ -50,8 +50,6 @@ def visualize(image, preds):
             # x_r = np.array([0, posenet_cfg.input_shape[1]], dtype=np.float32)
             # y_r = np.array([0, posenet_cfg.input_shape[0]], dtype=np.float32)
             # z_r = np.array([0, 1], dtype=np.float32)
-
-
 
         ax.set_title('3D vis')
         ax.set_xlabel('X Label')
