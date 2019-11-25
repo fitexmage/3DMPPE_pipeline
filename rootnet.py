@@ -33,7 +33,7 @@ def get_input(image, person_boxes):
 
     return person_images, k_values
 
-def get_root(person_boxes, person_images, k_values):
+def get_root(raw_image, person_boxes, person_images, k_values):
     rootnet_cfg.set_args(gpu_ids='0')
     cudnn.fastest = True
     cudnn.benchmark = True
@@ -51,7 +51,5 @@ def get_root(person_boxes, person_images, k_values):
         rootnet_pred = rootnet_preds[i]
         rootnet_pred[0] = rootnet_pred[0] / rootnet_cfg.output_shape[1] * box[2] + box[0]
         rootnet_pred[1] = rootnet_pred[1] / rootnet_cfg.output_shape[0] * box[3] + box[1]
-
-        # if pipeline_cfg.to_camera:
-        rootnet_pred[0], rootnet_pred[1], rootnet_pred[2] = pixel2cam(rootnet_pred, pipeline_cfg.f, np.array([box[2]/2, box[3]/2]))
+        rootnet_pred[0], rootnet_pred[1], rootnet_pred[2] = pixel2cam(rootnet_pred, pipeline_cfg.f, np.array([raw_image.shape[1]/2, raw_image.shape[0]/2]))
     return rootnet_preds
