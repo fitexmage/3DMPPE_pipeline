@@ -27,12 +27,16 @@ def visualize(image, preds):
             y = np.array([pred[i1, 1], pred[i2, 1]])
             z = np.array([pred[i1, 2], pred[i2, 2]])
 
-            if pred[i1, 0] > 0 and pred[i2, 0] > 0:
-                ax.plot(x, z, -y, c=colors[l], linewidth=2)
-            if pred[i1, 0] > 0:
-                ax.scatter(pred[i1, 0], pred[i1, 2], -pred[i1, 1], c=colors[l], marker='o')
-            if pred[i2, 0] > 0:
-                ax.scatter(pred[i2, 0], pred[i2, 2], -pred[i2, 1], c=colors[l], marker='o')
+            ax.plot(x, z, -y, c=colors[l], linewidth=2)
+            ax.scatter(pred[i1, 0], pred[i1, 2], -pred[i1, 1], c=colors[l], marker='o')
+            ax.scatter(pred[i2, 0], pred[i2, 2], -pred[i2, 1], c=colors[l], marker='o')
+
+            # if pred[i1, 0] > 0 and pred[i2, 0] > 0:
+            #     ax.plot(x, z, -y, c=colors[l], linewidth=2)
+            # if pred[i1, 0] > 0:
+            #     ax.scatter(pred[i1, 0], pred[i1, 2], -pred[i1, 1], c=colors[l], marker='o')
+            # if pred[i2, 0] > 0:
+            #     ax.scatter(pred[i2, 0], pred[i2, 2], -pred[i2, 1], c=colors[l], marker='o')
 
         x_r = np.array([0, posenet_cfg.input_shape[1]], dtype=np.float32)
         y_r = np.array([0, posenet_cfg.input_shape[0]], dtype=np.float32)
