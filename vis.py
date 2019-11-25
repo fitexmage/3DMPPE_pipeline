@@ -13,6 +13,7 @@ def visualize(image, preds):
         pred = preds[0]
 
         fig = plt.figure()
+        plt.axis('equal')
         ax = fig.add_subplot(111, projection='3d')
 
         # Convert from plt 0-1 RGBA colors to 0-255 BGR colors for opencv.
@@ -46,9 +47,6 @@ def visualize(image, preds):
         ax.set_xlabel('X Label')
         ax.set_ylabel('Z Label')
         ax.set_zlabel('Y Label')
-        ax.set_xlim([0,posenet_cfg.input_shape[1]])
-        ax.set_ylim([0,1])
-        ax.set_zlim([-posenet_cfg.input_shape[0],0])
         ax.legend()
         plt.savefig("output.jpg")
     else:
