@@ -18,7 +18,16 @@ def visualize(image, preds):
         colors = [cmap(i) for i in np.linspace(0, 1, len(pipeline_cfg.skeleton) + 2)]
         colors = [np.array((c[2], c[1], c[0])) for c in colors]
 
+        min_z = np.min(preds[:, :, 2])
+        max_z = np.max(preds[:, :, 2])
+
         for pred in preds:
+            if pred[:, 0].all() < -2000 or \
+                    pred[:, 1].all() < -2000 or \
+                    pred[:, 0].all() > 2000 or \
+                    pred[:, 1].all() > 2000 or pred[:, 2].all() > max_z + 3500:
+                continue
+
             for l in range(len(pipeline_cfg.skeleton)):
                 i1 = pipeline_cfg.skeleton[l][0]
                 i2 = pipeline_cfg.skeleton[l][1]
@@ -41,8 +50,7 @@ def visualize(image, preds):
             # y_r = np.array([0, posenet_cfg.input_shape[0]], dtype=np.float32)
             # z_r = np.array([0, 1], dtype=np.float32)
 
-        min_z = np.min(preds[:, :, 2])
-        max_z = np.max(preds[:, :, 2])
+
 
         ax.set_title('3D vis')
         ax.set_xlabel('X Label')
