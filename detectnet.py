@@ -24,6 +24,7 @@ def get_bounding_boxes(image):
     for i, box in enumerate(person_boxes):
         box = box.cpu().numpy()
         box = np.array([box[0], box[1], box[2] - box[0], box[3] - box[1]])
+        print(cv2.Laplacian(cv2.cvtColor(image, cv2.COLOR_BGR2GRAY), cv2.CV_64F).var())
         result.append(box)
 
     return result
