@@ -50,7 +50,6 @@ def visualize(image, preds):
         ax.set_ylim([-2000,2000])
         ax.set_zlim([14000,16000])
         ax.legend()
-        plt.axis('equal')
         plt.savefig("output.jpg")
     else:
         for pred in preds:
