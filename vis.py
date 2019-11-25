@@ -12,6 +12,7 @@ def visualize(image, preds):
     if pipeline_cfg.to_camera:
         pred = preds[0]
 
+        plt.axis('off')
         fig = plt.figure()
         ax = fig.add_subplot(111, projection='3d')
 
