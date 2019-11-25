@@ -32,6 +32,7 @@ def visualize(image, preds):
             print(pred)
             print()
             print(pred[:, 0])
+            print(pred[:, 0].all() < -2000)
             print()
             for l in range(len(pipeline_cfg.skeleton)):
                 i1 = pipeline_cfg.skeleton[l][0]
