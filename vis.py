@@ -10,6 +10,7 @@ def visualize_image(image, preds):
     tmpimg = tmpimg * np.array(posenet_cfg.pixel_std).reshape(3, 1, 1) + np.array(posenet_cfg.pixel_mean).reshape(3, 1, 1)
     tmpimg = tmpimg.astype(np.uint8)
     tmpimg = tmpimg[::-1, :, :]
+    print(tmpimg.shape)
     tmpimg = np.transpose(tmpimg, (1, 2, 0)).copy()
     tmpkps = np.zeros((3, pipeline_cfg.joint_num))
     tmpkps[:2, :] = preds[0, :, :2].cpu().numpy().transpose(1, 0) / pipeline_cfg.output_shape[0] * pipeline_cfg.input_shape[0]
