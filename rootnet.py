@@ -21,9 +21,8 @@ def get_input(image, person_boxes):
     )
 
     for i, box in enumerate(person_boxes):
-        image, _ = generate_patch_image(image, box, False, 0)
-        image = transform(image)
-        person_images[i] = image
+        patch_image, _ = generate_patch_image(image, box, False, 0)
+        person_images[i] = transform(patch_image)
         k_values[i] = np.array(
             [math.sqrt(rootnet_cfg.bbox_real[0] * rootnet_cfg.bbox_real[1] * pipeline_cfg.f[0] * pipeline_cfg.f[1] / (box[3] * box[2]))]).astype(
             np.float32)
