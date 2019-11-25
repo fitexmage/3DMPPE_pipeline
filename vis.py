@@ -39,7 +39,6 @@ def visualize(image, preds):
         z_r = np.array([0, 1], dtype=np.float32)
 
         ax.set_title('3D vis')
-
         ax.set_xlabel('X Label')
         ax.set_ylabel('Z Label')
         ax.set_zlabel('Y Label')
@@ -49,5 +48,5 @@ def visualize(image, preds):
         for pred in preds:
             tmpimg = vis_keypoints(tmpimg, np.transpose(pred), pipeline_cfg.skeleton)
 
-    cv2.imwrite('output.jpg', tmpimg)
+        cv2.imwrite('output.jpg', tmpimg)
 
