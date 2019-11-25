@@ -4,7 +4,7 @@ import numpy as np
 class Config:
     input_inx = 2
     input_path = "data/input_" + str(input_inx) + ".jpg"
-    output_path = "data/input_" + str(input_inx) + ".jpg"
+    output_path = "data/output_" + str(input_inx) + ".jpg"
 
     joint_num = 21
     joints_name = ('Head_top',  # 0
@@ -53,7 +53,7 @@ class Config:
     flip_pairs = ((2, 5), (3, 6), (4, 7), (8, 11), (9, 12), (10, 13))
     rootnet_model_inx = 18
     posenet_model_inx = 24
-    f = np.array([700, 700])
+    f = np.array([1300, 1300])
 
     to_camera = True
     vis = True
