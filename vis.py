@@ -6,7 +6,7 @@ from posenet_repo.common.utils.vis import vis_keypoints, vis_3d_skeleton
 from posenet_repo.main.config import cfg as posenet_cfg
 
 def visualize_image(image, preds):
-    tmpimg = image[0].cpu().numpy()
+    tmpimg = image.cpu().numpy()[0]
     tmpimg = tmpimg * np.array(posenet_cfg.pixel_std).reshape(3, 1, 1) + np.array(posenet_cfg.pixel_mean).reshape(3, 1, 1)
     tmpimg = tmpimg.astype(np.uint8)
     tmpimg = tmpimg[::-1, :, :]
