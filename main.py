@@ -7,7 +7,7 @@ from config import cfg as pipeline_cfg
 from vis import visualize
 
 def main():
-    image = cv2.imread("./input.jpg")
+    image = cv2.imread(pipeline_cfg.input_path)
     person_boxes = get_bounding_boxes(image)
     if len(person_boxes) == 0:
         return

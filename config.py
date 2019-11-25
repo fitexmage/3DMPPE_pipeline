@@ -2,6 +2,10 @@ import numpy as np
 
 
 class Config:
+    input_inx = 2
+    input_path = "data/input_" + str(input_inx) + ".jpg"
+    output_path = "data/input_" + str(input_inx) + ".jpg"
+
     joint_num = 21
     joints_name = ('Head_top',  # 0
                    'Thorax',  # 1

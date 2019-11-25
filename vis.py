@@ -49,9 +49,9 @@ def visualize(image, preds):
         ax.set_ylim([7000,11000])
         ax.set_zlim([-2000,2000])
         ax.legend()
-        plt.savefig("output.jpg")
+        plt.savefig(pipeline_cfg.output_path)
     else:
         for pred in preds:
             tmpimg = vis_keypoints(tmpimg, np.transpose(pred), pipeline_cfg.skeleton)
 
-        cv2.imwrite('output.jpg', tmpimg)
+        cv2.imwrite(pipeline_cfg.output_path, tmpimg)
