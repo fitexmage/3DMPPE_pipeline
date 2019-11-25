@@ -22,11 +22,11 @@ def visualize(image, preds):
         max_z = np.max(preds[:, :, 2])
 
         for pred in preds:
-            if (pred[:, 0] < -2000).all() or \
-                    (pred[:, 1] < -2000).all() or \
-                    (pred[:, 0] > 2000).all() or \
-                    (pred[:, 1] > 2000).all() or \
-                    (pred[:, 2] > max_z).all() > min_z + 3500:
+            if (pred[:, 0] < -2500).all() or \
+                    (pred[:, 1] < -2500).all() or \
+                    (pred[:, 0] > 2500).all() or \
+                    (pred[:, 1] > 2500).all() or \
+                    (pred[:, 2] > max_z).all() > min_z + 4500:
                 continue
 
             for l in range(len(pipeline_cfg.skeleton)):
