@@ -12,7 +12,6 @@ def visualize(image, preds):
     if pipeline_cfg.to_camera:
         pred = preds[0]
 
-        plt.axis('off')
         fig = plt.figure()
         ax = fig.add_subplot(111, projection='3d')
 
@@ -47,6 +46,9 @@ def visualize(image, preds):
         ax.set_xlabel('X Label')
         ax.set_ylabel('Z Label')
         ax.set_zlabel('Y Label')
+        ax.set_xlim([0,posenet_cfg.input_shape[1]])
+        ax.set_ylim([0,1])
+        ax.set_zlim([-posenet_cfg.input_shape[0],0])
         ax.legend()
         plt.savefig("output.jpg")
     else:
