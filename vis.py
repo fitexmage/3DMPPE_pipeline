@@ -19,6 +19,7 @@ def visualize(image, preds):
         colors = [np.array((c[2], c[1], c[0])) for c in colors]
 
         min_z = np.min(preds[:, 0, 2])
+        print("min:", min_z)
         max_z = np.max(preds[:, 0, 2])
 
         for pred in preds:
