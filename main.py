@@ -16,7 +16,6 @@ def main():
     print(rootnet_preds.shape)
     posenet_preds = get_pose(person_boxes, person_images, rootnet_preds)
     print(posenet_preds.shape)
-    # cv2.imwrite("output.jpg", image)
     return posenet_preds
 
 if __name__ == "__main__":
