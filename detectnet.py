@@ -24,7 +24,8 @@ def get_bounding_boxes(image):
     for i, box in enumerate(person_boxes):
         box = box.cpu().numpy()
         tmp_image = image[int(box[1]):int(box[3]), int(box[0]):int(box[2])]
-        if cv2.Laplacian(cv2.cvtColor(tmp_image, cv2.COLOR_BGR2GRAY), cv2.CV_32F).var() < 500:
+        blur = cv2.Laplacian(cv2.cvtColor(tmp_image, cv2.COLOR_BGR2GRAY), cv2.CV_32F).var()
+        if blur < 500:
             continue
         box = np.array([box[0], box[1], box[2] - box[0], box[3] - box[1]])
         result.append(box)
