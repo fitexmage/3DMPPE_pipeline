@@ -9,7 +9,7 @@ def visualize(image, preds):
     if pipeline_cfg.to_camera:
         print()
     else:
-        tmpimg = image.clone()
+        tmpimg = image.copy()
         for pred in preds:
             tmpimg = vis_keypoints(tmpimg, np.transpose(pred), pipeline_cfg.skeleton)
 
