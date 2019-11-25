@@ -35,9 +35,4 @@ def get_pose(person_boxes, person_images, rootnet_preds):
         if pipeline_cfg.to_camera:
             posenet_pred[:, 0], posenet_pred[:, 1], posenet_pred[:, 2] = pixel2cam(posenet_pred, pipeline_cfg.f, np.array([box[2]/2, box[3]/2]))
 
-        # for i in range(len(posenet_pred)):
-        #     cv2.circle(image, (posenet_pred[i][0], posenet_pred[i][1]), 5, (0, 0, 255), -1)
-        #     cv2.putText(image, pipeline_cfg.joints_name[i], (posenet_pred[i][0], posenet_pred[i][1]),
-        #                 cv2.FONT_HERSHEY_TRIPLEX, 0.5, (0, 255, 0), 1)
-
     return posenet_preds

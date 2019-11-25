@@ -51,7 +51,7 @@ class Config:
     posenet_model_inx = 24
     f = np.array([1500, 1500])
 
-    to_camera = True
+    to_camera = False
     vis = True
 
 cfg = Config()
