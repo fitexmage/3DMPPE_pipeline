@@ -23,8 +23,7 @@ def get_input(image, person_boxes):
     for i, box in enumerate(person_boxes):
         patch_image, _ = generate_patch_image(image, box, False, 0)
         import cv2
-        print(cv2.cvtColor(patch_image, cv2.COLOR_BGR2GRAY))
-        print(cv2.Laplacian(cv2.cvtColor(patch_image, cv2.COLOR_BGR2GRAY), cv2.CV_64F).var())
+        print(cv2.Laplacian(cv2.cvtColor(patch_image, cv2.COLOR_BGR2GRAY), cv2.CV_32F).var())
         person_images[i] = transform(patch_image)
         k_values[i] = np.array(
             [math.sqrt(rootnet_cfg.bbox_real[0] * rootnet_cfg.bbox_real[1] * pipeline_cfg.f[0] * pipeline_cfg.f[1] / (box[3] * box[2]))]).astype(
