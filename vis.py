@@ -29,6 +29,8 @@ def visualize(image, preds):
                     pred[:, 2].all() > max_z + 3500:
                 continue
             print()
+            print(pred)
+            print()
             print(pred[:, 0])
             print()
             for l in range(len(pipeline_cfg.skeleton)):
