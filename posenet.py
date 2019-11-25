@@ -6,6 +6,7 @@ from posenet_repo.common.base import Tester as posenet_Test
 from posenet_repo.common.utils.pose_utils import pixel2cam, warp_coord_to_original, flip
 
 from config import cfg as pipeline_cfg
+from vis import visualize_image
 
 def get_pose(person_boxes, person_images, rootnet_preds):
     posenet_cfg.set_args('0')
@@ -25,6 +26,8 @@ def get_pose(person_boxes, person_images, rootnet_preds):
                 flipped_coord_out[:, pair[0], :], flipped_coord_out[:, pair[1], :] = flipped_coord_out[:, pair[1], :].clone(), flipped_coord_out[:, pair[0], :].clone()
 
             posenet_preds = (posenet_preds + flipped_coord_out) / 2.
+        if pipeline_cfg.vis:
+            visualize_image(person_images, posenet_preds)
         posenet_preds = posenet_preds.cpu().numpy()
 
     for i, box in enumerate(person_boxes):

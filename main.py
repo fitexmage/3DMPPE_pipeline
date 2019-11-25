@@ -3,7 +3,6 @@ import cv2
 from detectnet import get_bounding_boxes
 from rootnet import get_input, get_root
 from posenet import get_pose
-from vis import visualize_image
 
 def main():
     image = cv2.imread("./input.jpg")
@@ -16,7 +15,6 @@ def main():
     print(rootnet_preds.shape)
     posenet_preds = get_pose(person_boxes, person_images, rootnet_preds)
     print(posenet_preds.shape)
-    visualize_image(person_images, posenet_preds)
     return posenet_preds
 
 if __name__ == "__main__":

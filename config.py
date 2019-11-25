@@ -52,5 +52,6 @@ class Config:
     f = np.array([1500, 1500])
 
     to_camera = False
+    vis = True
 
 cfg = Config()
