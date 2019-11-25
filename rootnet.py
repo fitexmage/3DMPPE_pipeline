@@ -46,7 +46,7 @@ def get_root(person_boxes, person_images, k_values):
     with torch.no_grad():
         rootnet_preds = rootnet_tester.model(person_images, k_values)
         rootnet_preds = rootnet_preds.cpu().numpy()
-    print(rootnet_preds)
+
     for i, box in enumerate(person_boxes):
         rootnet_pred = rootnet_preds[i]
         rootnet_pred[0] = rootnet_pred[0] / rootnet_cfg.output_shape[1] * box[2] + box[0]

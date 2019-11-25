@@ -22,9 +22,7 @@ def get_pose(person_boxes, person_images, rootnet_preds):
             flipped_coord_out[:, :, 0] = posenet_cfg.output_shape[1] - flipped_coord_out[:, :, 0] - 1
 
             for pair in pipeline_cfg.flip_pairs:
-                flipped_coord_out[:, pair[0], :], flipped_coord_out[:, pair[1], :] = flipped_coord_out[:, pair[1],
-                                                                                     :].clone(), flipped_coord_out[:,
-                                                                                                 pair[0], :].clone()
+                flipped_coord_out[:, pair[0], :], flipped_coord_out[:, pair[1], :] = flipped_coord_out[:, pair[1], :].clone(), flipped_coord_out[:, pair[0], :].clone()
 
             posenet_preds = (posenet_preds + flipped_coord_out) / 2.
         posenet_preds = posenet_preds.cpu().numpy()
