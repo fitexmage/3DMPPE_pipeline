@@ -39,7 +39,7 @@ def visualize(image, preds):
 
             # x_r = np.array([0, posenet_cfg.input_shape[1]], dtype=np.float32)
             # y_r = np.array([0, posenet_cfg.input_shape[0]], dtype=np.float32)
-            z_r = np.array([0, 1], dtype=np.float32)
+            # z_r = np.array([0, 1], dtype=np.float32)
 
         ax.set_title('3D vis')
         ax.set_xlabel('X Label')

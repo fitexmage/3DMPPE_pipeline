@@ -8,7 +8,9 @@ from vis import visualize
 
 def main():
     image = cv2.imread("./input.jpg")
+    print(type(image))
     person_boxes = get_bounding_boxes(image)
+    print(type(image))
     if len(person_boxes) == 0:
         return
 
