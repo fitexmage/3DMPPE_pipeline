@@ -29,6 +29,7 @@ def get_pose(raw_image, person_boxes, person_images, rootnet_preds):
 
     for i, box in enumerate(person_boxes):
         posenet_pred = posenet_preds[i]
+        posenet_pred = posenet_pred[:18]
         posenet_pred[:, 0], posenet_pred[:, 1], posenet_pred[:, 2] = warp_coord_to_original(posenet_pred, box, rootnet_preds[i])
 
         if pipeline_cfg.to_camera:
