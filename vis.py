@@ -5,7 +5,7 @@ from config import cfg as pipeline_cfg
 from posenet_repo.common.utils.vis import vis_keypoints, vis_3d_skeleton
 from posenet_repo.main.config import cfg as posenet_cfg
 
-def vis(image, preds):
+def visualize_image(image, preds):
     tmpimg = image.cpu().numpy()
     tmpimg = tmpimg * np.array(posenet_cfg.pixel_std).reshape(3, 1, 1) + np.array(posenet_cfg.pixel_mean).reshape(3, 1, 1)
     tmpimg = tmpimg.astype(np.uint8)
