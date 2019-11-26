@@ -50,7 +50,7 @@ class Config:
                 (6, 7),
                 # (7, 18)
                 )
-    flip_test = True
+    flip_test = False
     flip_pairs = ((2, 5), (3, 6), (4, 7), (8, 11), (9, 12), (10, 13))
     rootnet_model_inx = 18
     posenet_model_inx = 24
