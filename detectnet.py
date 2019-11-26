@@ -25,7 +25,6 @@ def get_bounding_boxes(image):
         box = box.cpu().numpy()
         tmp_image = image[int(box[1]):int(box[3]), int(box[0]):int(box[2])]
         not_blur = cv2.Laplacian(cv2.cvtColor(tmp_image, cv2.COLOR_BGR2GRAY), cv2.CV_32F).var()
-        print(not_blur)
         if not_blur < 200:
             continue
         box = np.array([box[0], box[1], box[2] - box[0], box[3] - box[1]])
