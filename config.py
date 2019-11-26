@@ -2,7 +2,7 @@ import numpy as np
 
 
 class Config:
-    input_inx = 5
+    input_inx = 6
     input_path = "data/input_" + str(input_inx) + ".jpg"
     output_path = "data/output_" + str(input_inx) + ".jpg"
 
