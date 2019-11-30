@@ -38,7 +38,7 @@ def main():
 
     start = time.time()
     for i, image in enumerate(frames):
-        print(str(i) + " / " + str(len(frames)))
+        print(str(i+1) + " / " + str(len(frames)))
 
         person_boxes = get_image_bounding_boxes(image, detectnet_model)
         if len(person_boxes) == 0:
@@ -48,8 +48,12 @@ def main():
         posenet_preds = get_pose(image, person_boxes, posenet_model, person_images, rootnet_preds)
         posenet_preds_list.append(posenet_preds)
 
-    print(len(posenet_preds_list))
     print(time.time() - start)
+
+    import pickle
+    output_file = open("output.bin", "wb")
+    pickle.dump(posenet_preds_list, output_file)
+    output_file.close()
 
 if __name__ == "__main__":
     main()
