@@ -44,6 +44,5 @@ def get_video_bounding_boxes(video, detectron_cfg):
     frame_gen = demo._frame_from_video(video)
     for frame in frame_gen:
         prediction = demo.predictor(frame)
-        for key in prediction:
-            print(key)
+        print(type(prediction["instances"]))
         break
