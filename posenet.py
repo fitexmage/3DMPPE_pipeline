@@ -38,5 +38,5 @@ def get_pose(raw_image, person_boxes, posenet_model, person_images, rootnet_pred
             f = np.array([raw_image.shape[1]/2, raw_image.shape[0]/2])
             c = np.array([raw_image.shape[1]/2, raw_image.shape[0]/2])
             posenet_pred[:, 0], posenet_pred[:, 1], posenet_pred[:, 2] = pixel2cam(posenet_pred, f, c)
-
+    print(posenet_preds.shape)
     return posenet_preds
