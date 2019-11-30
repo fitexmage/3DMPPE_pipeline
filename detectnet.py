@@ -42,5 +42,5 @@ def get_video_bounding_boxes(video, detectron_cfg):
     frame_gen = demo._frame_from_video(video)
     result = []
     for frame in frame_gen:
-        result.append((frame, get_image_bounding_boxes(frame, detectron_cfg)))
+        result.append((frame, get_image_bounding_boxes(frame, demo.predictor)))
     return result
