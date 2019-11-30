@@ -1,5 +1,6 @@
 import numpy as np
 import cv2
+import tqdm
 
 from detectron2.engine import DefaultPredictor
 from detectron2.config import get_cfg
@@ -41,4 +42,5 @@ def get_video_bounding_boxes(video, detectron_cfg):
     demo = VisualizationDemo(detectron_cfg)
     num_frames = int(video.get(cv2.CAP_PROP_FRAME_COUNT))
 
-    print(type(demo.run_on_video(video)))
+    for vis_frame in tqdm.tqdm(demo.run_on_video(video), total=num_frames):
+        print(type(vis_frame))

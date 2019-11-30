@@ -10,7 +10,7 @@ def main():
     video = cv2.VideoCapture(pipeline_cfg.input_video_path)
     detectron_config = get_config()
     get_video_bounding_boxes(video, detectron_config)
-    
+
     # image = cv2.imread(pipeline_cfg.input_image_path)
     # person_boxes = get_image_bounding_boxes(image, detectron_config)
     # if len(person_boxes) == 0:
