@@ -1,6 +1,3 @@
-import numpy as np
-
-
 class Config:
     input_inx = 1
     input_image_path = "data/input_" + str(input_inx) + ".jpg"

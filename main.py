@@ -40,16 +40,20 @@ def main():
     start = time.time()
     for i, image in enumerate(frames):
         print(str(i+1) + " / " + str(len(frames)))
-
+        print("a")
         person_boxes = get_image_bounding_boxes(image, detectnet_model)
         if len(person_boxes) == 0:
             continue
+        print("b")
         person_images, k_values = get_input(image, person_boxes)
+        print("c")
         rootnet_preds = get_root(image, person_boxes, rootnet_model, person_images, k_values)
+        print("d")
         posenet_preds = get_pose(image, person_boxes, posenet_model, person_images, rootnet_preds)
+        print("e")
         posenet_preds_list.append(posenet_preds)
 
-    print(time.time() - start)
+    print("It takes ", str(time.time() - start) + " s")
 
     output_file = open(pipeline_cfg.output_video_path, "wb")
     pickle.dump(posenet_preds_list, output_file)
