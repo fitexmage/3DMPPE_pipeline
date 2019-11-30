@@ -41,6 +41,7 @@ def main():
     for i, image in enumerate(frames):
         print(str(i+1) + " / " + str(len(frames)))
         person_boxes = get_image_bounding_boxes(image, detectnet_model)
+        print(len(person_boxes))
         if len(person_boxes) == 0:
             continue
         person_images, k_values = get_input(image, person_boxes)
