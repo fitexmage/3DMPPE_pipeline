@@ -41,7 +41,15 @@ def main():
     for i, image in enumerate(frames):
         print(str(i+1) + " / " + str(len(frames)))
         person_boxes = get_image_bounding_boxes(image, detectnet_model)
-        print(len(person_boxes))
+        if i == 16:
+            outputs = detectnet_model(image)
+
+            from detectron2.utils.visualizer import Visualizer
+            from detectron2.data import MetadataCatalog
+            from detectron2.config import get_cfg
+            v = Visualizer(image[:, :, ::-1], MetadataCatalog.get(detectron_cfg.DATASETS.TRAIN[0]), scale=1.2)
+            v = v.draw_instance_predictions(outputs["instances"].to("cpu"))
+            cv2.imwrite("output.jpg", v.get_image()[:, :, ::-1])
         if len(person_boxes) == 0:
             continue
         person_images, k_values = get_input(image, person_boxes)
