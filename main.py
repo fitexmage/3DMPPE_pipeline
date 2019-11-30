@@ -1,5 +1,6 @@
 import cv2
 import time
+import pickle
 
 from detectnet import get_detectnet_config, get_detectnet_model, get_image_bounding_boxes, get_frames
 from rootnet import get_input, set_rootnet_config, get_rootnet_model, get_root
@@ -50,8 +51,7 @@ def main():
 
     print(time.time() - start)
 
-    import pickle
-    output_file = open("output.bin", "wb")
+    output_file = open(pipeline_cfg.output_video_path, "wb")
     pickle.dump(posenet_preds_list, output_file)
     output_file.close()
 

@@ -6,6 +6,7 @@ class Config:
     input_image_path = "data/input_" + str(input_inx) + ".jpg"
     output_image_path = "data/output_" + str(input_inx) + ".jpg"
     input_video_path = "data/input.MOV"
+    output_video_path = "data/output.dat"
 
     joint_num = 21
     joints_name = ('Head_top',  # 0
