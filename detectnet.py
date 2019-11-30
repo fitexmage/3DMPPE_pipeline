@@ -13,8 +13,7 @@ def get_config():
     detectron_cfg.MODEL.WEIGHTS = "detectron2://COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x/137849600/model_final_f10217.pkl"
     return detectron_cfg
 
-def get_image_bounding_boxes(image, detectron_cfg):
-    predictor = DefaultPredictor(detectron_cfg)
+def get_image_bounding_boxes(image, predictor):
     outputs = predictor(image)
 
     # from detectron2.utils.visualizer import Visualizer
@@ -40,9 +39,8 @@ def get_image_bounding_boxes(image, detectron_cfg):
 
 def get_video_bounding_boxes(video, detectron_cfg):
     demo = VisualizationDemo(detectron_cfg)
-    num_frames = int(video.get(cv2.CAP_PROP_FRAME_COUNT))
     frame_gen = demo._frame_from_video(video)
+    result = []
     for frame in frame_gen:
-        prediction = demo.predictor(frame)
-        print(prediction["instances"])
-        break
+        result.append((frame, get_image_bounding_boxes(frame, detectron_cfg)))
+    return result

@@ -33,6 +33,8 @@ def get_pose(raw_image, person_boxes, person_images, rootnet_preds):
         posenet_pred[:, 0], posenet_pred[:, 1], posenet_pred[:, 2] = warp_coord_to_original(posenet_pred, box, rootnet_preds[i])
 
         if pipeline_cfg.to_camera:
-            posenet_pred[:, 0], posenet_pred[:, 1], posenet_pred[:, 2] = pixel2cam(posenet_pred, pipeline_cfg.f, np.array([raw_image.shape[1]/2, raw_image.shape[0]/2]))
+            f = np.array([raw_image.shape[1]/2, raw_image.shape[0]/2])
+            c = np.array([raw_image.shape[1]/2, raw_image.shape[0]/2])
+            posenet_pred[:, 0], posenet_pred[:, 1], posenet_pred[:, 2] = pixel2cam(posenet_pred, f, c)
 
     return posenet_preds
