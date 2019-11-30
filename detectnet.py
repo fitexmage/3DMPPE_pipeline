@@ -34,7 +34,7 @@ def get_image_bounding_boxes(image, predictor):
         # if resolution < 200:
         #     continue
 
-        ratio = (box[2] - box[0]) * (box[3] - box[1]) / (image.shape[2] - image.shape[0]) * (image.shape[3] - image.shape[1])
+        ratio = (box[2] - box[0]) * (box[3] - box[1]) / (image.shape[0] * image.shape[1])
         print(ratio)
         if ratio > 0.01:
             box = np.array([box[0], box[1], box[2] - box[0], box[3] - box[1]])
