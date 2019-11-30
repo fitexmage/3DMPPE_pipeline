@@ -54,9 +54,10 @@ def main():
     pickle.dump(posenet_preds_list, output_file)
     output_file.close()
 
-    with open(pipeline_cfg.output_video_path, "rb") as f:
+def load(video_path):
+    with open(video_path, "rb") as f:
         data = pickle.load(f)
-    print(type(data))
+    return data
 
 if __name__ == "__main__":
     main()
