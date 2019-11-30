@@ -42,5 +42,5 @@ def get_video_bounding_boxes(video, detectron_cfg):
     demo = VisualizationDemo(detectron_cfg)
     num_frames = int(video.get(cv2.CAP_PROP_FRAME_COUNT))
     frame_gen = demo._frame_from_video(video)
-    print(frame_gen.shape)
-    # for frame in frame_gen:
+    for frame in frame_gen:
+        print(frame.shape)
