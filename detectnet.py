@@ -3,12 +3,16 @@ import cv2
 
 from detectron2.engine import DefaultPredictor
 from detectron2.config import get_cfg
+from demo.predictor import VisualizationDemo
 
-def get_bounding_boxes(image):
+def get_config():
     detectron_cfg = get_cfg()
     detectron_cfg.merge_from_file("./detectron2_repo/configs/COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml")
     detectron_cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.5
     detectron_cfg.MODEL.WEIGHTS = "detectron2://COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x/137849600/model_final_f10217.pkl"
+    return detectron_cfg
+
+def get_image_bounding_boxes(image, detectron_cfg):
     predictor = DefaultPredictor(detectron_cfg)
     outputs = predictor(image)
 
@@ -32,3 +36,9 @@ def get_bounding_boxes(image):
         result.append(box)
 
     return result
+
+def get_video_bounding_boxes(video, detectron_cfg):
+    demo = VisualizationDemo(detectron_cfg)
+    num_frames = int(video.get(cv2.CAP_PROP_FRAME_COUNT))
+
+    print(type(demo.run_on_video(video)))

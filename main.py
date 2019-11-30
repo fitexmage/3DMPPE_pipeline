@@ -1,6 +1,6 @@
 import cv2
 
-from detectnet import get_bounding_boxes
+from detectnet import get_config, get_image_bounding_boxes
 from rootnet import get_input, get_root
 from posenet import get_pose
 from config import cfg as pipeline_cfg
@@ -8,7 +8,8 @@ from vis import visualize
 
 def main():
     image = cv2.imread(pipeline_cfg.input_path)
-    person_boxes = get_bounding_boxes(image)
+    detectron_config = get_config()
+    person_boxes = get_image_bounding_boxes(image, detectron_config)
     if len(person_boxes) == 0:
         return
 
