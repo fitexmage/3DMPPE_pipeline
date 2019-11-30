@@ -12,7 +12,8 @@ def main():
     # video_bounding_boxes = get_video_bounding_boxes(video, detectron_config)
 
     image = cv2.imread(pipeline_cfg.input_image_path)
-    person_boxes = get_image_bounding_boxes(image, detectron2.engine.DefaultPredictor(detectron_config))
+    from detectron2.engine import DefaultPredictor
+    person_boxes = get_image_bounding_boxes(image, DefaultPredictor(detectron_config))
     if len(person_boxes) == 0:
         return
 
