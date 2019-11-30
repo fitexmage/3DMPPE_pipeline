@@ -35,7 +35,6 @@ def get_image_bounding_boxes(image, predictor):
         #     continue
 
         ratio = (box[2] - box[0]) * (box[3] - box[1]) / (image.shape[0] * image.shape[1])
-        print(ratio)
         if ratio > 0.01:
             box = np.array([box[0], box[1], box[2] - box[0], box[3] - box[1]])
 
