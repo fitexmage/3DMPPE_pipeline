@@ -1,5 +1,6 @@
 import numpy as np
 import cv2
+import torch
 
 from detectron2.engine import DefaultPredictor
 from detectron2.config import get_cfg
@@ -24,9 +25,8 @@ def get_image_bounding_boxes(image, predictor):
     # cv2.imwrite("output.jpg", v.get_image()[:, :, ::-1])
 
     is_human = outputs["instances"].pred_classes == 0
-    print(type(is_human))
     high_score = outputs["instances"].scores >= 90
-    person_boxes = outputs["instances"].pred_boxes[np.logical_and(is_human, high_score)]
+    person_boxes = outputs["instances"].pred_boxes[is_human & high_score]
 
     result = []
     for i, box in enumerate(person_boxes):
