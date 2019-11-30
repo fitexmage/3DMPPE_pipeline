@@ -38,11 +38,15 @@ def main():
         print(str(i) + " / " + str(len(frames)))
 
         person_boxes = get_image_bounding_boxes(image, detectnet_model)
+        print("a")
         if len(person_boxes) == 0:
             continue
         person_images, k_values = get_input(image, person_boxes)
+        print("b")
         rootnet_preds = get_root(image, person_boxes, rootnet_model, person_images, k_values)
+        print("c")
         posenet_preds = get_pose(image, person_boxes, posenet_model, person_images, rootnet_preds)
+        print("d")
         posenet_preds_list.append(posenet_preds)
 
     print(len(posenet_preds_list))
