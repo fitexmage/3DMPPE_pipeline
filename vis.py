@@ -4,11 +4,9 @@ import matplotlib.pyplot as plt
 
 from config import cfg as pipeline_cfg
 from posenet_repo.common.utils.vis import vis_keypoints
-from posenet_repo.main.config import cfg as posenet_cfg
 
 
 def visualize(image, preds):
-    tmpimg = image.copy()
     if pipeline_cfg.to_camera:
         fig = plt.figure()
         ax = fig.add_subplot(111, projection='3d')
@@ -36,17 +34,6 @@ def visualize(image, preds):
                 ax.scatter(pred[i1, 0], pred[i1, 2], -pred[i1, 1], c=colors[l], marker='o')
                 ax.scatter(pred[i2, 0], pred[i2, 2], -pred[i2, 1], c=colors[l], marker='o')
 
-                # if pred[i1, 0] > 0 and pred[i2, 0] > 0:
-                #     ax.plot(x, z, -y, c=colors[l], linewidth=2)
-                # if pred[i1, 0] > 0:
-                #     ax.scatter(pred[i1, 0], pred[i1, 2], -pred[i1, 1], c=colors[l], marker='o')
-                # if pred[i2, 0] > 0:
-                #     ax.scatter(pred[i2, 0], pred[i2, 2], -pred[i2, 1], c=colors[l], marker='o')
-
-            # x_r = np.array([0, posenet_cfg.input_shape[1]], dtype=np.float32)
-            # y_r = np.array([0, posenet_cfg.input_shape[0]], dtype=np.float32)
-            # z_r = np.array([0, 1], dtype=np.float32)
-
         ax.set_title('3D vis')
         ax.set_xlabel('X Label')
         ax.set_ylabel('Z Label')
@@ -57,6 +44,7 @@ def visualize(image, preds):
         ax.legend()
         plt.savefig(pipeline_cfg.output_image_path)
     else:
+        tmpimg = image.copy()
         for pred in preds:
             tmpimg = vis_keypoints(tmpimg, np.transpose(pred), pipeline_cfg.skeleton)
 
