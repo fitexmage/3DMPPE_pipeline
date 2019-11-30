@@ -35,6 +35,7 @@ def get_pose(raw_image, person_boxes, person_images, rootnet_preds):
         if pipeline_cfg.to_camera:
             f = np.array([raw_image.shape[1]/2, raw_image.shape[0]/2])
             c = np.array([raw_image.shape[1]/2, raw_image.shape[0]/2])
+            print(f)
             posenet_pred[:, 0], posenet_pred[:, 1], posenet_pred[:, 2] = pixel2cam(posenet_pred, f, c)
 
     return posenet_preds

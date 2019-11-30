@@ -23,6 +23,7 @@ def get_input(image, person_boxes):
     for i, box in enumerate(person_boxes):
         patch_image, _ = generate_patch_image(image, box, False, 0)
         person_images[i] = transform(patch_image)
+        print((box[3] / 2), (box[2] / 2))
         k_values[i] = np.array(
             [math.sqrt(rootnet_cfg.bbox_real[0] * rootnet_cfg.bbox_real[1] * (box[3] / 2) * (box[2] / 2) / (box[3] * box[2]))]).astype(
             np.float32)
