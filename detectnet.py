@@ -25,10 +25,7 @@ def get_image_bounding_boxes(image, predictor):
     # cv2.imwrite("output.jpg", v.get_image()[:, :, ::-1])
 
     is_human = outputs["instances"].pred_classes == 0
-    high_score = outputs["instances"].scores >= 90
-    print(is_human)
-    print(high_score)
-    print(outputs["instances"].scores)
+    high_score = outputs["instances"].scores >= 0.9
     person_boxes = outputs["instances"].pred_boxes[is_human & high_score]
 
     result = []
