@@ -6,12 +6,15 @@ from detectron2.engine import DefaultPredictor
 from detectron2.config import get_cfg
 from demo.predictor import VisualizationDemo
 
-def get_config():
-    detectron_cfg = get_cfg()
-    detectron_cfg.merge_from_file("./detectron2_repo/configs/COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml")
-    detectron_cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.5
-    detectron_cfg.MODEL.WEIGHTS = "detectron2://COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x/137849600/model_final_f10217.pkl"
-    return detectron_cfg
+def get_detectnet_config():
+    detectnet_cfg = get_cfg()
+    detectnet_cfg.merge_from_file("./detectron2_repo/configs/COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml")
+    detectnet_cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.5
+    detectnet_cfg.MODEL.WEIGHTS = "detectron2://COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x/137849600/model_final_f10217.pkl"
+    return detectnet_cfg
+
+def get_detectnet_model(detectron_cfg):
+    return DefaultPredictor(detectron_cfg)
 
 def get_image_bounding_boxes(image, predictor):
     outputs = predictor(image)
@@ -29,7 +32,7 @@ def get_image_bounding_boxes(image, predictor):
         box = box.cpu().numpy()
         tmp_image = image[int(box[1]):int(box[3]), int(box[0]):int(box[2])]
         not_blur = cv2.Laplacian(cv2.cvtColor(tmp_image, cv2.COLOR_BGR2GRAY), cv2.CV_32F).var()
-        print(not_blur)
+        # print(not_blur)
         if not_blur < 200:
             continue
         box = np.array([box[0], box[1], box[2] - box[0], box[3] - box[1]])
@@ -37,10 +40,10 @@ def get_image_bounding_boxes(image, predictor):
 
     return result
 
-def get_video_bounding_boxes(video, detectron_cfg):
-    demo = VisualizationDemo(detectron_cfg)
-    frame_gen = demo._frame_from_video(video)
-    result = []
-    for frame in frame_gen:
-        result.append((frame, get_image_bounding_boxes(frame, demo.predictor)))
-    return result
+def get_frames(video):
+    while video.isOpened():
+        success, frame = video.read()
+        if success:
+            yield frame
+        else:
+            break

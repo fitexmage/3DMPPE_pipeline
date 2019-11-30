@@ -32,18 +32,21 @@ def get_input(image, person_boxes):
 
     return person_images, k_values
 
-def get_root(raw_image, person_boxes, person_images, k_values):
+def set_rootnet_config():
     rootnet_cfg.set_args(gpu_ids='0')
     cudnn.fastest = True
     cudnn.benchmark = True
     cudnn.deterministic = False
     cudnn.enabled = True
 
+def get_rootnet_model():
     rootnet_tester = rootnet_Tester(pipeline_cfg.rootnet_model_inx)
     rootnet_tester._make_model()
+    return rootnet_tester
 
+def get_root(raw_image, person_boxes, rootnet_model, person_images, k_values):
     with torch.no_grad():
-        rootnet_preds = rootnet_tester.model(person_images, k_values)
+        rootnet_preds = rootnet_model.model(person_images, k_values)
         rootnet_preds = rootnet_preds.cpu().numpy()
 
     for i, box in enumerate(person_boxes):

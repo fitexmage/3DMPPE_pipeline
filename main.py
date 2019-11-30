@@ -1,15 +1,15 @@
 import cv2
 
-from detectnet import get_config, get_image_bounding_boxes, get_video_bounding_boxes
-from rootnet import get_input, get_root
-from posenet import get_pose
+from detectnet import get_detectnet_config, get_detectnet_model, get_image_bounding_boxes, get_frames
+from rootnet import get_input, set_rootnet_config, get_rootnet_model, get_root
+from posenet import set_posenet_config, get_posenet_model, get_pose
 from config import cfg as pipeline_cfg
 from vis import visualize
 
 def main():
-    detectron_config = get_config()
+    detectnet_config = get_detectnet_config()
+    detectnet_model = get_detectnet_model(detectnet_config)
     video = cv2.VideoCapture(pipeline_cfg.input_video_path)
-    video_bounding_boxes = get_video_bounding_boxes(video, detectron_config)
 
     # image = cv2.imread(pipeline_cfg.input_image_path)
     # from detectron2.engine import DefaultPredictor
@@ -27,15 +27,22 @@ def main():
     # return posenet_preds
 
     posenet_preds_list = []
+    
+    frames = get_frames(video)
+    for i, image in enumerate(frames):
+        print(str(i) + " / " + str(len(frames)))
 
-    for i, (image, person_boxes) in enumerate(video_bounding_boxes):
-        print(str(i) + " / " + str(len(video_bounding_boxes)))
+        person_boxes = get_image_bounding_boxes(image, detectnet_model)
         if len(person_boxes) == 0:
             continue
         person_images, k_values = get_input(image, person_boxes)
-        rootnet_preds = get_root(image, person_boxes, person_images, k_values)
+        set_rootnet_config()
+        rootnet_model = get_rootnet_model()
+        rootnet_preds = get_root(image, person_boxes, rootnet_model, person_images, k_values)
         # print(rootnet_preds)
-        posenet_preds = get_pose(image, person_boxes, person_images, rootnet_preds)
+        set_posenet_config()
+        posenet_model = get_posenet_model()
+        posenet_preds = get_pose(image, person_boxes, posenet_model, person_images, rootnet_preds)
         # print(posenet_preds)
         posenet_preds_list.append(posenet_preds)
 

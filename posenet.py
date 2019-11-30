@@ -7,18 +7,21 @@ from posenet_repo.common.utils.pose_utils import pixel2cam, warp_coord_to_origin
 
 from config import cfg as pipeline_cfg
 
-def get_pose(raw_image, person_boxes, person_images, rootnet_preds):
+def set_posenet_config():
     posenet_cfg.set_args('0')
 
+def get_posenet_model():
     posenet_tester = posenet_Test(pipeline_cfg.posenet_model_inx)
     posenet_tester.joint_num = pipeline_cfg.joint_num
     posenet_tester._make_model()
+    return posenet_tester
 
+def get_pose(raw_image, person_boxes, posenet_model, person_images, rootnet_preds):
     with torch.no_grad():
-        posenet_preds = posenet_tester.model(person_images)
+        posenet_preds = posenet_model.model(person_images)
         if pipeline_cfg.flip_test:
             flipped_input_img = flip(person_images, dims=3)
-            flipped_coord_out = posenet_tester.model(flipped_input_img)
+            flipped_coord_out = posenet_model.model(flipped_input_img)
             flipped_coord_out[:, :, 0] = posenet_cfg.output_shape[1] - flipped_coord_out[:, :, 0] - 1
 
             for pair in pipeline_cfg.flip_pairs:
