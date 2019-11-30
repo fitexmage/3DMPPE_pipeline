@@ -41,6 +41,6 @@ def get_image_bounding_boxes(image, detectron_cfg):
 def get_video_bounding_boxes(video, detectron_cfg):
     demo = VisualizationDemo(detectron_cfg)
     num_frames = int(video.get(cv2.CAP_PROP_FRAME_COUNT))
-
-    for vis_frame in tqdm.tqdm(demo.run_on_video(video), total=num_frames):
-        print(vis_frame.shape)
+    frame_gen = demo._frame_from_video(video)
+    print(frame_gen.shape)
+    # for frame in frame_gen:
