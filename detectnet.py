@@ -28,12 +28,17 @@ def get_image_bounding_boxes(image, predictor):
     result = []
     for i, box in enumerate(person_boxes):
         box = box.cpu().numpy()
-        tmp_image = image[int(box[1]):int(box[3]), int(box[0]):int(box[2])]
-        not_blur = cv2.Laplacian(cv2.cvtColor(tmp_image, cv2.COLOR_BGR2GRAY), cv2.CV_32F).var()
-        print(not_blur)
-        if not_blur < 200:
-            continue
-        box = np.array([box[0], box[1], box[2] - box[0], box[3] - box[1]])
+        # tmp_image = image[int(box[1]):int(box[3]), int(box[0]):int(box[2])]
+        # resolution = cv2.Laplacian(cv2.cvtColor(tmp_image, cv2.COLOR_BGR2GRAY), cv2.CV_32F).var()
+        # print(resolution)
+        # if resolution < 200:
+        #     continue
+
+        ratio = (box[2] - box[0]) * (box[3] - box[1]) / (image.shape[2] - image.shape[0]) * (image.shape[3] - image.shape[1])
+        print(ratio)
+        if ratio > 0.01:
+            box = np.array([box[0], box[1], box[2] - box[0], box[3] - box[1]])
+
         result.append(box)
 
     return result
