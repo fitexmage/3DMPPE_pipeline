@@ -1,10 +1,8 @@
 import numpy as np
 import cv2
-import tqdm
 
 from detectron2.engine import DefaultPredictor
 from detectron2.config import get_cfg
-from demo.predictor import VisualizationDemo
 
 def get_detectnet_config():
     detectnet_cfg = get_cfg()
@@ -41,9 +39,10 @@ def get_image_bounding_boxes(image, predictor):
     return result
 
 def get_frames(video):
+    frames = []
     while video.isOpened():
         success, frame = video.read()
         if success:
-            yield frame
+            frames.append(frame)
         else:
-            break
+            return frames

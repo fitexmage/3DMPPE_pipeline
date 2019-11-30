@@ -27,7 +27,7 @@ def main():
     # return posenet_preds
 
     posenet_preds_list = []
-    
+
     frames = get_frames(video)
     for i, image in enumerate(frames):
         print(str(i) + " / " + str(len(frames)))
