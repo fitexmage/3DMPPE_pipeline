@@ -28,7 +28,7 @@ def get_image_bounding_boxes(image, predictor):
     high_score = outputs["instances"].scores >= 90
     print(is_human)
     print(high_score)
-    print(is_human & high_score)
+    print(outputs["instances"].scores)
     person_boxes = outputs["instances"].pred_boxes[is_human & high_score]
 
     result = []
