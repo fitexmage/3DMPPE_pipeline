@@ -24,6 +24,7 @@ def get_image_bounding_boxes(image, predictor):
     # cv2.imwrite("output.jpg", v.get_image()[:, :, ::-1])
 
     person_boxes = outputs["instances"].pred_boxes[outputs["instances"].pred_classes == 0]
+    print(outputs["instances"])
 
     result = []
     for i, box in enumerate(person_boxes):
