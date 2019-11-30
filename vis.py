@@ -22,7 +22,7 @@ def visualize(image, preds):
         max_z = np.max(preds[:, 0, 2])
 
         for pred in preds:
-            if (pred[0, 0] < -2000) or pred[0, 1] < -2000 or pred[0, 0] > 2000 or pred[0, 1] > 2000 or pred[0, 2] > min_z + 5000:
+            if (pred[0, 0] < -2500) or pred[0, 1] < -2500 or pred[0, 0] > 2500 or pred[0, 1] > 2500 or pred[0, 2] > min_z + 5000:
                 continue
 
             for l in range(len(pipeline_cfg.skeleton)):
