@@ -9,6 +9,11 @@ from vis import visualize
 def main():
     detectnet_config = get_detectnet_config()
     detectnet_model = get_detectnet_model(detectnet_config)
+    set_rootnet_config()
+    rootnet_model = get_rootnet_model()
+    set_posenet_config()
+    posenet_model = get_posenet_model()
+
     video = cv2.VideoCapture(pipeline_cfg.input_video_path)
 
     # image = cv2.imread(pipeline_cfg.input_image_path)
@@ -36,14 +41,8 @@ def main():
         if len(person_boxes) == 0:
             continue
         person_images, k_values = get_input(image, person_boxes)
-        set_rootnet_config()
-        rootnet_model = get_rootnet_model()
         rootnet_preds = get_root(image, person_boxes, rootnet_model, person_images, k_values)
-        # print(rootnet_preds)
-        set_posenet_config()
-        posenet_model = get_posenet_model()
         posenet_preds = get_pose(image, person_boxes, posenet_model, person_images, rootnet_preds)
-        # print(posenet_preds)
         posenet_preds_list.append(posenet_preds)
 
     print(len(posenet_preds_list))
