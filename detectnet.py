@@ -23,8 +23,9 @@ def get_image_bounding_boxes(image, predictor):
     # v = v.draw_instance_predictions(outputs["instances"].to("cpu"))
     # cv2.imwrite("output.jpg", v.get_image()[:, :, ::-1])
 
-    person_boxes = outputs["instances"].pred_boxes[outputs["instances"].pred_classes == 0]
-    print(outputs["instances"])
+    is_human = outputs["instances"].pred_classes == 0
+    person_boxes = outputs["instances"].pred_boxes[is_human]
+    print(outputs["instances"].scores)
 
     result = []
     for i, box in enumerate(person_boxes):
