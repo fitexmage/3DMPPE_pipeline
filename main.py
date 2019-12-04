@@ -1,6 +1,7 @@
 import cv2
 import time
 import pickle
+import csv
 
 from detectnet import get_detectnet_config, get_detectnet_model, get_image_bounding_boxes, get_frames
 from rootnet import get_input, set_rootnet_config, get_rootnet_model, get_root
@@ -55,10 +56,39 @@ def main():
     pickle.dump(posenet_preds_list, output_file)
     output_file.close()
 
-def load(video_path):
-    with open(video_path, "rb") as f:
+
+def load(binary_path):
+    with open(binary_path, "rb") as f:
         data = pickle.load(f)
     return data
+
+
+def get_header():
+    header_list = []
+    for i in range(pipeline_cfg.joint_num):
+        header_list.extend([str(i)+"_x", str(i)+"_y"])
+    return header_list
+
+
+def get_row(data):
+    pos_list = []
+    for joint in data[0]:
+        for pos in joint:
+            pos_list.append(str(pos))
+    return pos_list
+
+
+def to_csv(binary_path, csv_path):
+    data = load(binary_path)
+    print(len(data))
+    print(data[0].shape)
+
+    with open(csv_path, 'w', encoding='utf-8', newline='') as f:
+        writer = csv.writer(f, dialect='excel')
+        writer.writerow(get_header())
+        for row in data:
+            writer.writerow(get_row(row))
+
 
 if __name__ == "__main__":
     main()
