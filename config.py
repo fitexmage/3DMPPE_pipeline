@@ -28,6 +28,7 @@ class Config:
                    'R_Toe',  # 19
                    'L_Toe'  # 20
                    )
+    spine_inx = 15
     skeleton = ((0, 16),
                 (16, 1),
                 (1, 15),
