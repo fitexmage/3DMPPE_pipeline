@@ -2,7 +2,7 @@ import cv2
 import time
 import pickle
 
-from detectnet import get_detectnet_config, get_detectnet_model, get_image_bounding_boxes, get_frames
+from detectnet import get_detectnet_config, get_detectnet_model, get_image_bounding_boxes
 from rootnet import get_input, set_rootnet_config, get_rootnet_model, get_root
 from posenet import set_posenet_config, get_posenet_model, get_pose
 from config import cfg as pipeline_cfg
