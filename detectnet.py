@@ -44,11 +44,3 @@ def get_image_bounding_boxes(image, predictor):
 
     return result
 
-def get_frames(video):
-    frames = []
-    while video.isOpened():
-        success, frame = video.read()
-        if success:
-            frames.append(frame)
-        else:
-            return frames
