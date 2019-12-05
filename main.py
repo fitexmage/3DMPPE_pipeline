@@ -16,9 +16,7 @@ def main():
     set_rootnet_config()
     rootnet_model = get_rootnet_model()
     set_posenet_config()
-    print("A")
     posenet_model = get_posenet_model()
-    print("A")
 
     video = cv2.VideoCapture(pipeline_cfg.input_video_path)
 

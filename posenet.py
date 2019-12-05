@@ -11,9 +11,13 @@ def set_posenet_config():
     posenet_cfg.set_args('0')
 
 def get_posenet_model():
+    print("A")
     posenet_tester = posenet_Test(pipeline_cfg.posenet_model_inx)
+    print("A")
     posenet_tester.joint_num = pipeline_cfg.joint_num
+    print("A")
     posenet_tester._make_model()
+    print("A")
     return posenet_tester
 
 def get_pose(raw_image, person_boxes, posenet_model, person_images, rootnet_preds):
