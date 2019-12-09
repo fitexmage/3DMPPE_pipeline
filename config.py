@@ -1,5 +1,5 @@
 class Config:
-    input_inx = 5
+    input_inx = 7
     input_image_path = "data/input_" + str(input_inx) + ".jpg"
     output_image_path = "data/output_" + str(input_inx) + ".jpg"
     input_video_path = "data/input.mp4"
