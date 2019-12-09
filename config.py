@@ -1,5 +1,5 @@
 class Config:
-    input_inx = 1
+    input_inx = 5
     input_image_path = "data/input_" + str(input_inx) + ".jpg"
     output_image_path = "data/output_" + str(input_inx) + ".jpg"
     input_video_path = "data/input.mp4"
@@ -56,6 +56,7 @@ class Config:
     posenet_model_inx = 24
     # f = np.array([800, 800])
 
+    is_video = False
     to_camera = True
     vis = True
 

@@ -6,7 +6,7 @@ from config import cfg as pipeline_cfg
 from posenet_repo.common.utils.vis import vis_keypoints
 
 
-def visualize(image, preds):
+def visualize_and_save(image, preds):
     if pipeline_cfg.to_camera:
         fig = plt.figure()
         ax = fig.add_subplot(111, projection='3d')
