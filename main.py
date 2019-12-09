@@ -51,7 +51,7 @@ def main():
 
         person_images, k_values = get_input(image, person_boxes)
         rootnet_preds = get_root(image, person_boxes, rootnet_model, person_images, k_values)
-        # print(rootnet_preds)
+        print(rootnet_preds)
         posenet_preds = get_pose(image, person_boxes, posenet_model, person_images, rootnet_preds)
         # print(posenet_preds)
         if pipeline_cfg.vis:
