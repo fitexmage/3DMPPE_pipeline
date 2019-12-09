@@ -18,12 +18,12 @@ def get_detectnet_model(detectron_cfg):
 def get_image_bounding_boxes(image, predictor):
     outputs = predictor(image)
 
-    # from detectron2.utils.visualizer import Visualizer
-    # from detectron2.data import MetadataCatalog
-    # detectnet_config = get_detectnet_config()
-    # v = Visualizer(image[:, :, ::-1], MetadataCatalog.get(detectnet_config.DATASETS.TRAIN[0]), scale=1.2)
-    # v = v.draw_instance_predictions(outputs["instances"].to("cpu"))
-    # cv2.imwrite("output.jpg", v.get_image()[:, :, ::-1])
+    from detectron2.utils.visualizer import Visualizer
+    from detectron2.data import MetadataCatalog
+    detectnet_config = get_detectnet_config()
+    v = Visualizer(image[:, :, ::-1], MetadataCatalog.get(detectnet_config.DATASETS.TRAIN[0]), scale=1.2)
+    v = v.draw_instance_predictions(outputs["instances"].to("cpu"))
+    cv2.imwrite("output.jpg", v.get_image()[:, :, ::-1])
 
     is_human = outputs["instances"].pred_classes == 0
     high_score = outputs["instances"].scores >= 0.9
