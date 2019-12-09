@@ -57,7 +57,7 @@ class Config:
     # f = np.array([800, 800])
 
     is_video = False
-    to_camera = True
+    to_camera = False
     vis = True
 
 cfg = Config()
