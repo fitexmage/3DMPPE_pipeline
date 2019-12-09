@@ -20,6 +20,7 @@ def get_image_bounding_boxes(image, predictor):
 
     from detectron2.utils.visualizer import Visualizer
     from detectron2.data import MetadataCatalog
+    detectnet_config = get_detectnet_config()
     v = Visualizer(image[:, :, ::-1], MetadataCatalog.get(detectron_cfg.DATASETS.TRAIN[0]), scale=1.2)
     v = v.draw_instance_predictions(outputs["instances"].to("cpu"))
     cv2.imwrite("output.jpg", v.get_image()[:, :, ::-1])
