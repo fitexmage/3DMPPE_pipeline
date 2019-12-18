@@ -23,7 +23,8 @@ def visualize_and_save(image, preds):
             if (pred[pipeline_cfg.spine_inx, 0] < -2500) or \
                     pred[pipeline_cfg.spine_inx, 1] < -2500 or \
                     pred[pipeline_cfg.spine_inx, 0] > 2500 or \
-                    pred[pipeline_cfg.spine_inx, 1] > 2500 or pred[0, 2] > min_z + 5000:
+                    pred[pipeline_cfg.spine_inx, 1] > 2500 or \
+                    pred[pipeline_cfg.spine_inx, 2] > min_z + 5000:
                 continue
 
             for l in range(len(pipeline_cfg.skeleton)):
@@ -42,7 +43,7 @@ def visualize_and_save(image, preds):
         ax.set_ylabel('Z Label')
         ax.set_zlabel('Y Label')
         ax.set_xlim([-2000,2000])
-        ax.set_ylim([min_z - 1000, min_z + 3000])
+        ax.set_ylim([min_z - 2000, min_z + 2000])
         ax.set_zlim([-2000,2000])
         ax.legend()
         plt.savefig(pipeline_cfg.output_vis_path)
