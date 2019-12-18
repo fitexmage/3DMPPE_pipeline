@@ -1,5 +1,5 @@
 class Config:
-    input_inx = 8
+    input_inx = 9
     input_image_path = "data/input_" + str(input_inx) + ".jpg"
     output_vis_path = "data/output_" + str(input_inx) + ".jpg"
     input_video_path = "data/input.mp4"
@@ -59,6 +59,6 @@ class Config:
 
     is_video = False
     to_camera = True
-    vis = True
+    vis = False
 
 cfg = Config()
