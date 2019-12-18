@@ -59,6 +59,6 @@ class Config:
 
     is_video = False
     to_camera = True
-    vis = False
+    vis = True
 
 cfg = Config()
