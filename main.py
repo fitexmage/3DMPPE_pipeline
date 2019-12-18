@@ -41,6 +41,7 @@ def main():
         output_file = open(pipeline_cfg.output_video_path, "wb")
         pickle.dump(posenet_preds_list, output_file)
         output_file.close()
+        to_csv(pipeline_cfg.output_binary_video_path, pipeline_cfg.output_csv_video_path)
 
     else:
         image = cv2.imread(pipeline_cfg.input_image_path)
