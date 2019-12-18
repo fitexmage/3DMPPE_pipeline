@@ -16,11 +16,14 @@ def visualize_and_save(image, preds):
         colors = [cmap(i) for i in np.linspace(0, 1, len(pipeline_cfg.skeleton) + 2)]
         colors = [np.array((c[2], c[1], c[0])) for c in colors]
 
-        min_z = np.min(preds[:, 0, 2])
-        max_z = np.max(preds[:, 0, 2])
+        min_z = np.min(preds[:, pipeline_cfg.spine_inx, 2])
+        max_z = np.max(preds[:, pipeline_cfg.spine_inx, 2])
 
         for pred in preds:
-            if (pred[0, 0] < -2500) or pred[0, 1] < -2500 or pred[0, 0] > 2500 or pred[0, 1] > 2500 or pred[0, 2] > min_z + 5000:
+            if (pred[pipeline_cfg.spine_inx, 0] < -2500) or \
+                    pred[pipeline_cfg.spine_inx, 1] < -2500 or \
+                    pred[pipeline_cfg.spine_inx, 0] > 2500 or \
+                    pred[pipeline_cfg.spine_inx, 1] > 2500 or pred[0, 2] > min_z + 5000:
                 continue
 
             for l in range(len(pipeline_cfg.skeleton)):
