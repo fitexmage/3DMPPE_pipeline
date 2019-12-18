@@ -17,6 +17,7 @@ def visualize_and_save(image, preds):
         colors = [np.array((c[2], c[1], c[0])) for c in colors]
 
         min_z = np.min(preds[:, pipeline_cfg.spine_inx, 2])
+        print(min_z)
         max_z = np.max(preds[:, pipeline_cfg.spine_inx, 2])
 
         for pred in preds:
