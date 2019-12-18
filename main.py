@@ -56,10 +56,10 @@ def main():
         # print(posenet_preds)
         if pipeline_cfg.vis:
             visualize_and_save(image, posenet_preds)
-        output_file = open(pipeline_cfg.output_binary_path, "wb")
-        pickle.dump([posenet_preds], output_file)
-        output_file.close()
-        to_csv(pipeline_cfg.output_binary_path, pipeline_cfg.output_csv_path)
+        # output_file = open(pipeline_cfg.output_binary_path, "wb")
+        # pickle.dump([posenet_preds], output_file)
+        # output_file.close()
+        # to_csv(pipeline_cfg.output_binary_path, pipeline_cfg.output_csv_path)
         return posenet_preds
 
 
