@@ -35,13 +35,12 @@ def main():
             rootnet_preds = get_root(image, person_boxes, rootnet_model, person_images, k_values)
             posenet_preds = get_pose(image, person_boxes, posenet_model, person_images, rootnet_preds)
             posenet_preds_list.append(posenet_preds)
-        print(posenet_preds[0])
         print("It takes ", str(time.time() - start) + " s")
 
         output_file = open(pipeline_cfg.output_video_path, "wb")
         pickle.dump(posenet_preds_list, output_file)
         output_file.close()
-        to_csv(pipeline_cfg.output_binary_video_path, pipeline_cfg.output_csv_video_path)
+        to_csv(pipeline_cfg.output_binary_path, pipeline_cfg.csv_video_path)
 
     else:
         image = cv2.imread(pipeline_cfg.input_image_path)
@@ -52,11 +51,15 @@ def main():
 
         person_images, k_values = get_input(image, person_boxes)
         rootnet_preds = get_root(image, person_boxes, rootnet_model, person_images, k_values)
-        print(rootnet_preds)
+        # print(rootnet_preds)
         posenet_preds = get_pose(image, person_boxes, posenet_model, person_images, rootnet_preds)
-        print(posenet_preds)
+        # print(posenet_preds)
         if pipeline_cfg.vis:
             visualize_and_save(image, posenet_preds)
+        output_file = open(pipeline_cfg.output_binary_path, "wb")
+        pickle.dump([posenet_preds], output_file)
+        output_file.close()
+        to_csv(pipeline_cfg.output_binary_path, pipeline_cfg.output_csv_path)
         return posenet_preds
 
 

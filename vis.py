@@ -42,10 +42,10 @@ def visualize_and_save(image, preds):
         ax.set_ylim([min_z - 1000, min_z + 3000])
         ax.set_zlim([-2000,2000])
         ax.legend()
-        plt.savefig(pipeline_cfg.output_image_path)
+        plt.savefig(pipeline_cfg.output_vis_path)
     else:
         tmpimg = image.copy()
         for pred in preds:
             tmpimg = vis_keypoints(tmpimg, np.transpose(pred), pipeline_cfg.skeleton)
 
-        cv2.imwrite(pipeline_cfg.output_image_path, tmpimg)
+        cv2.imwrite(pipeline_cfg.output_vis_path, tmpimg)

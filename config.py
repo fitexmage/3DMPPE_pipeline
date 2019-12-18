@@ -1,10 +1,10 @@
 class Config:
     input_inx = 8
     input_image_path = "data/input_" + str(input_inx) + ".jpg"
-    output_image_path = "data/output_" + str(input_inx) + ".jpg"
+    output_vis_path = "data/output_" + str(input_inx) + ".jpg"
     input_video_path = "data/input.mp4"
-    output_binary_video_path = "data/output.dat"
-    output_csv_video_path = "data/output.csv"
+    output_binary_path = "data/output.dat"
+    output_csv_path = "data/output.csv"
 
     joint_num = 21
     joints_name = ('Head_top',  # 0
@@ -57,8 +57,8 @@ class Config:
     posenet_model_inx = 24
     # f = np.array([800, 800])
 
-    is_video = True
+    is_video = False
     to_camera = True
-    vis = True
+    vis = False
 
 cfg = Config()
